@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.agricultural</groupId>
+    <artifactId>Agricultural</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>agricultural</name>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.agricultural.Start</mainClass>
+                            <packageName>com.agricultural</packageName>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>compile</includeScope>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <!--<plugin>-->
+                <!--<groupId>com.pyx4me</groupId>-->
+                <!--<artifactId>proguard-maven-plugin</artifactId>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<phase>package</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>proguard</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<proguardVersion>4.8</proguardVersion>-->
+                    <!--<obfuscate>true</obfuscate>-->
+                    <!--<attach>true</attach>-->
+                    <!--<appendClassifier>false</appendClassifier>-->
+                    <!--<addMavenDescriptor>true</addMavenDescriptor>-->
+                    <!--<options>-->
+                        <!--<option>-allowaccessmodification</option>-->
+                        <!--<option>-renamesourcefileattribute SourceFile</option>-->
+                        <!--<option>-keep public class main.Main { *; }</option>-->
+                        <!--<option>-allowaccessmodification</option>-->
+                        <!--<option></option>-->
+                    <!--</options>-->
+                    <!--<libs>-->
+                        <!--<lib>${java.home}/lib/rt.jar</lib>-->
+                    <!--</libs>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+<!---->
+<!---->
+            <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>l4j-clui</id>
+                        <phase>package</phase>
+                        <goals><goal>launch4j</goal></goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/Agricultural.exe</outfile>
+                            <!--<dontWrapJar>true</dontWrapJar>-->
+                            <!--<jar>target/Agricultural-1.0-SNAPSHOT</jar>-->
+                            <errTitle>encc</errTitle>
+                            <classPath>
+                                <mainClass>com.agricultural.Start</mainClass>
+                                <addDependencies>true</addDependencies>
+                                <preCp>anything</preCp>
+                            </classPath>
+                            <icon>C:\Users\Alexey\IdeaProjects\Agricultural\tractor.ico</icon>
+                            <jre>
+                                <path>./jre8</path>
+                                <!--<minVersion>1.8.0</minVersion>-->
+                                <opts>
+                                    <opt>-Djava.endorsed.dirs=./endorsed</opt>
+                                </opts>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>private file version</txtFileVersion>
+                                <fileDescription>Agricultural private prigram</fileDescription>
+                                <copyright>Copyright © 2017 Oleksii Shubenko</copyright>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>txt product version</txtProductVersion>
+                                <productName>Agricultural</productName>
+                                <internalName>Agricultural</internalName>
+                                <originalFilename>Agricultural.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals><goal>single</goal></goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+
+    <properties>
+        <hibernate.version>5.2.1.Final</hibernate.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc &ndash;&gt;-->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.20.0</version>
+            <!--<scope>test</scope>-->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.kemitix/sqlite-dialect -->
+        <dependency>
+            <groupId>net.kemitix</groupId>
+            <artifactId>sqlite-dialect</artifactId>
+            <version>0.1.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate.dialect/sqlite-dialect -->
+        <!--<dependency>-->
+            <!--<groupId>org.hibernate.dialect</groupId>-->
+            <!--<artifactId>sqlite-dialect</artifactId>-->
+            <!--<version>0.1.0</version>-->
+        <!--</dependency>-->
+
+
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-c3p0 -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <version>5.2.10.Final</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.4.1211</version>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>mysql</groupId>-->
+            <!--<artifactId>mysql-connector-java</artifactId>-->
+            <!--<version>5.1.6</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.12</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.15</version>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.proguard</groupId>
+            <artifactId>proguard-parent</artifactId>
+            <version>5.3.3</version>
+            <type>pom</type>
+        </dependency>
+
+    </dependencies>
+
+
+</project>

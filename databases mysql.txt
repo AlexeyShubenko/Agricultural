@@ -1,0 +1,181 @@
+CREATE TABLE workplace (
+  
+id bigint(15) NOT NULL AUTO_INCREMENT,
+
+name varchar(255),
+  
+PRIMARY KEY (id)
+) ;
+
+CREATE TABLE employee(
+ 
+id bigint(15) NOT NULL AUTO_INCREMENT,
+fio varchar(255),
+
+wage int(11),
+position varchar(255),
+
+workplace_id bigint(15),
+
+PRIMARY KEY (id),
+
+CONSTRAINT FK_Workplaca FOREIGN KEY (workplace_id) REFERENCES workplace (id));
+
+CREATE TABLE operations(
+ 
+id bigint(15) NOT NULL AUTO_INCREMENT,
+ 
+operation varchar(255),
+  
+PRIMARY KEY (id)
+);
+
+CREATE TABLE machines(
+  
+id bigint(15) NOT NULL AUTO_INCREMENT,
+ 
+machine varchar(255),
+ 
+PRIMARY KEY (id)
+);
+
+CREATE TABLE detaildatahectare(
+ 
+id bigint(15) NOT NULL AUTO_INCREMENT,
+ 
+cultivatedArea varchar(255),
+  
+givenFuel varchar(255),
+ 
+machine varchar(255),
+  
+operation varchar(255),
+
+usedFuelArea varchar(255) ,
+PRIMARY KEY (id)
+);
+
+CREATE TABLE detaildatahour(
+ 
+id bigint(15) NOT NULL AUTO_INCREMENT,
+ 
+givenFuel varchar(255),
+ 
+machine varchar(255),
+  
+operation varchar(255),
+
+usedFuelArea varchar(255) ,
+
+workedHours varchar(255),
+ 
+PRIMARY KEY (id)
+
+);
+
+
+
+CREATE TABLE hectaretable (
+  
+id bigint(15) NOT NULL AUTO_INCREMENT,
+  
+PRIMARY KEY (id)
+);
+
+CREATE TABLE hectaremade (
+  
+id bigint(15) NOT NULL AUTO_INCREMENT,
+  
+cultivatedarea double,
+
+givenfuel double,
+ 
+usedfuel double,
+ 
+workcost double,
+  
+overallworkcost double,
+
+machine_id bigint(15),
+ 
+operation_id bigint(15),
+ 
+hect_id bigint(15),
+
+detailHect_id bigint(15),
+ 
+PRIMARY KEY (id),
+  
+CONSTRAINT FK_MachineHectare FOREIGN KEY (machine_id) REFERENCES machines (id),
+  
+CONSTRAINT FK_DetailHectare FOREIGN KEY (detailHect_id) REFERENCES detaildatahectare (id),
+  
+CONSTRAINT FK_HectareTable FOREIGN KEY (hect_id) REFERENCES hectaretable (id),
+  
+CONSTRAINT FK_OperationHectare  FOREIGN KEY (operation_id) REFERENCES operations (id)
+);
+
+CREATE TABLE hourtable (
+  
+id bigint(15) NOT NULL AUTO_INCREMENT,
+  
+PRIMARY KEY (id)
+);
+
+CREATE TABLE hourmade (
+  
+id bigint(15) NOT NULL AUTO_INCREMENT,
+  
+workedHours double,
+  
+givenfuel double,
+ 
+usedfuel double,
+ 
+workcost double,
+  
+overallworkcost double,
+ 
+machine_id bigint(15),
+ 
+operation_id bigint(15),
+ 
+hour_id bigint(15),
+
+detailHour_id bigint(15),
+ 
+PRIMARY KEY (id),
+  
+CONSTRAINT FK_MachineHour FOREIGN KEY (machine_id) REFERENCES machines (id),
+  
+CONSTRAINT FK_DetailHour FOREIGN KEY (detailHour_id) REFERENCES detaildatahour (id),
+  
+CONSTRAINT FK_HourTable FOREIGN KEY (hour_id) REFERENCES hourtable (id),
+  
+CONSTRAINT FK_OperationHour  FOREIGN KEY (operation_id) REFERENCES operations (id)
+);
+
+
+
+CREATE TABLE dateandinformation (
+ 
+id bigint(15) NOT NULL AUTO_INCREMENT,
+ 
+month varchar(255),
+ 
+year int(11),
+ 
+empl bigint(15),
+ 
+hect_id bigint(15),
+ 
+hour_id bigint(15),
+ 
+PRIMARY KEY (id),
+  
+CONSTRAINT FK_HectareTableDate FOREIGN KEY (hect_id) REFERENCES hectaretable (id),
+ 
+CONSTRAINT FK_Employee  FOREIGN KEY (empl) REFERENCES employee (id),
+  
+CONSTRAINT FK_HourTableDate  FOREIGN KEY (hour_id) REFERENCES hourtable (id)
+);
