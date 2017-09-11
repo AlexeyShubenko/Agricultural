@@ -1,15 +1,16 @@
-package com.agricultural.service;
+package com.agricultural.service.impl;
 
 import com.agricultural.dao.machinesunit.MachinesDAO;
 import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.domains.main.MachineTractorUnit;
+import com.agricultural.service.MachineService;
 
 import java.util.ArrayList;
 
 /**
  * Created by Alexey on 11.09.2017.
  */
-public class MachineServiceImpl implements MachineService{
+public class MachineServiceImpl implements MachineService {
 
     private static MachineServiceImpl instance = new MachineServiceImpl();
     private MachinesDAO machinesDAO = MachinesDAOImpl.getInstance();

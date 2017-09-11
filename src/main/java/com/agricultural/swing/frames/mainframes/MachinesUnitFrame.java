@@ -1,10 +1,9 @@
 package com.agricultural.swing.frames.mainframes;
 
-import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.domains.ExcelDataWriter;
 import com.agricultural.domains.main.MachineTractorUnit;
 import com.agricultural.service.MachineService;
-import com.agricultural.service.MachineServiceImpl;
+import com.agricultural.service.impl.MachineServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablemodels.MachineTableModel;
 import com.agricultural.swing.frames.tablerenderer.OperationMachineCellRenderer;

@@ -1,11 +1,10 @@
 package com.agricultural.swing.frames.driverinformation;
 
 import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.main.TractorDriver;
 import com.agricultural.service.MachineService;
-import com.agricultural.service.MachineServiceImpl;
+import com.agricultural.service.impl.MachineServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 
 import javax.swing.*;

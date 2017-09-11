@@ -1,9 +1,8 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.domains.main.MachineTractorUnit;
 import com.agricultural.service.MachineService;
-import com.agricultural.service.MachineServiceImpl;
+import com.agricultural.service.impl.MachineServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;

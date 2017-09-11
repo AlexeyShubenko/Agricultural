@@ -1,7 +1,6 @@
 package com.agricultural.dao.hectareinformation;
 
 import com.agricultural.dao.HibernateUtil;
-import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.DataMassive;
 import com.agricultural.domains.main.DateAndInformation;
@@ -15,7 +14,7 @@ import com.agricultural.domains.main.MachineTractorUnit;
 import com.agricultural.domains.main.TechnologicalOperation;
 import com.agricultural.domains.main.TractorDriver;
 import com.agricultural.service.MachineService;
-import com.agricultural.service.MachineServiceImpl;
+import com.agricultural.service.impl.MachineServiceImpl;
 import org.hibernate.query.Query;
 
 import javax.persistence.EntityManager;
