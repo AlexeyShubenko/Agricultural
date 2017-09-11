@@ -1,6 +1,7 @@
 package com.agricultural.swing.frames.mainframes;
 
-import com.agricultural.dao.machinesunit.MachinesDAOImpl;
+import com.agricultural.service.MachineService;
+import com.agricultural.service.MachineServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 
 import javax.swing.*;
@@ -11,9 +12,10 @@ import java.awt.event.ActionListener;
 /**
  * Created by Alexey on 14.02.2017.
  */
+//class is not used now
 public class AddMachineFrame extends JFrame {
 
-    private MachinesDAOImpl service = new MachinesDAOImpl();
+    private MachineService machineService = MachineServiceImpl.getInstance();
 
     private JPanel panel = new JPanel();
     private JLabel label = new JLabel("Машинно-тракторний агрегат");
@@ -42,7 +44,7 @@ public class AddMachineFrame extends JFrame {
                 String value = textField.getText().trim();
                 if(!value.equals("")) {
                     ///Всі назви машинно-тракторних агрегатів
-                    String[] allMachines = service.getAllMachinesName();
+                    String[] allMachines = machineService.getAllMachinesName();
                     ///якщо false то введенего значення немає в базі
                     boolean flag = false;
                     for (int i = 0; i < allMachines.length; i++) {
@@ -55,7 +57,7 @@ public class AddMachineFrame extends JFrame {
                     }
                     //якщо введене значення не повторяється то воно записуєтсья в базу
                     if (!flag) {
-                        service.createMachine(textField.getText().trim());
+                        machineService.createMachine(textField.getText().trim());
                         MachinesUnitFrame operations = new MachinesUnitFrame();
                         dispose();
                     }else JOptionPane.showMessageDialog(null, "Машинно-тракторний агрегат " + value + " вже існує",

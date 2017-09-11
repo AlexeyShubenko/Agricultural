@@ -3,6 +3,8 @@ package com.agricultural.swing.frames.mainframes;
 import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.domains.ExcelDataWriter;
 import com.agricultural.domains.main.MachineTractorUnit;
+import com.agricultural.service.MachineService;
+import com.agricultural.service.MachineServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablemodels.MachineTableModel;
 import com.agricultural.swing.frames.tablerenderer.OperationMachineCellRenderer;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
  */
 public class MachinesUnitFrame extends JFrame{
 
-    private MachinesDAOImpl service = new MachinesDAOImpl();
+    private MachineService machineService = MachineServiceImpl.getInstance();
 
     private JPanel panel = new JPanel();
 
@@ -33,11 +35,13 @@ public class MachinesUnitFrame extends JFrame{
     private JButton refreshButton = new JButton("Оновити дані в таблиці");
     private  JButton writeExcelMachine = new JButton("Експортувати в Excel");
 
-    /*додаткові панелі*/
+    /*additional panels*/
     private JPanel p1 = new JPanel();
     private JPanel p2 = new JPanel();
     private JPanel p3 = new JPanel();
     private JPanel p4 = new JPanel();
+
+    private Font defaultFont = new Font("Serif",Font.PLAIN,18);
 
     private final Integer FRAME_WIDTH = Math.round(FrameLocation.screenSize.width/2.5f);
     private final Integer FRAME_HEIGHT = Math.round(FrameLocation.screenSize.height/2.5f);
@@ -56,11 +60,10 @@ public class MachinesUnitFrame extends JFrame{
 
         panel.setLayout(new GridLayout(1,1));
 
-
         //зчитування назв всіх машинно-тракторних агрегатів
-        machines = service.getMachines();
+        machines = machineService.getMachines();
         if(machines.size()==0){
-            service.createMachine("відсутній");
+            machineService.createMachine("відсутній");
             machines.add(new MachineTractorUnit("відсутній"));
         }
 
@@ -68,7 +71,7 @@ public class MachinesUnitFrame extends JFrame{
         machineTableModel = new MachineTableModel(machines);
         JTable table = new JTable(machineTableModel);
         table.setRowHeight(30);
-        table.getTableHeader().setFont(new Font("Serif",Font.PLAIN,18));
+        table.getTableHeader().setFont(this.defaultFont);
         table.setDefaultRenderer(Object.class,new OperationMachineCellRenderer());
         table.getColumnModel().getColumn(1).setPreferredWidth(Math.round(FRAME_WIDTH/2));
         table.addMouseListener(new MouseAdapter() {
@@ -86,7 +89,7 @@ public class MachinesUnitFrame extends JFrame{
                                 "Ви впевнені, що хочете видалити технологічну опрерацію " + "\"value\"" + "?",
                                 "Увага!", JOptionPane.YES_NO_OPTION);
                         if (isDelete == 0) {
-                            service.deleteMachine(machines.get(i));
+                            machineService.deleteMachine(machines.get(i));
                             MachinesUnitFrame.this.dispose();
                             MachinesUnitFrame machinesUnitFrame = new MachinesUnitFrame();
                         }
@@ -114,7 +117,7 @@ public class MachinesUnitFrame extends JFrame{
                 String value = newOMachineTextField.getText().trim();
                 if(!value.equals("")) {
                     ///Всі назви машинно-тракторних агрегатів
-                    String[] allMachines = service.getAllMachinesName();
+                    String[] allMachines = machineService.getAllMachinesName();
                     ///якщо false то введенего значення немає в базі
                     boolean flag = false;
                     for (int i = 0; i < allMachines.length; i++) {
@@ -127,7 +130,7 @@ public class MachinesUnitFrame extends JFrame{
                     }
                     //якщо введене значення не повторяється то воно записуєтсья в базу
                     if (!flag) {
-                        service.createMachine(newOMachineTextField.getText().trim());
+                        machineService.createMachine(newOMachineTextField.getText().trim());
                         MachinesUnitFrame operations = new MachinesUnitFrame();
                         dispose();
                     }else JOptionPane.showMessageDialog(null, "Машинно-тракторний агрегат " + value + " вже існує",
@@ -149,7 +152,7 @@ public class MachinesUnitFrame extends JFrame{
         ///box - де будуть знаходитися всі інші панелі
         Box box = new Box(BoxLayout.Y_AXIS);
 
-        newMachineLabel.setFont(new Font("Serif",Font.PLAIN,18));
+        newMachineLabel.setFont(this.defaultFont);
 
         p1.setLayout(new FlowLayout());
         p1.add(newMachineLabel);

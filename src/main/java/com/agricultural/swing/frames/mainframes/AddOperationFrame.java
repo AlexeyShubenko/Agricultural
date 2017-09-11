@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by Alexey on 14.02.2017.
  */
+//class is not used now
 public class AddOperationFrame extends JFrame {
 
     private OperationDAOImpl service = new OperationDAOImpl();

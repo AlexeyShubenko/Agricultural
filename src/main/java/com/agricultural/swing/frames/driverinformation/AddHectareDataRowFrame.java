@@ -1,14 +1,12 @@
 package com.agricultural.swing.frames.driverinformation;
 
-import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
 import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.dao.operations.OperationDAOImpl;
-import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.MachineService;
+import com.agricultural.service.MachineServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
-import com.agricultural.swing.frames.mainframes.MachinesUnitFrame;
-import com.agricultural.swing.frames.mainframes.TechnoOperationsFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +20,7 @@ import java.awt.event.ActionListener;
 public class AddHectareDataRowFrame extends JFrame{
 
     private OperationDAOImpl operationService = new OperationDAOImpl();
-    private MachinesDAOImpl machinesService = new MachinesDAOImpl();
+    private MachineService machineService = MachineServiceImpl.getInstance();
     private InformationHectareDAOImpl infService = new InformationHectareDAOImpl();
 
     private JComboBox operationComboBox;
@@ -71,7 +69,7 @@ public class AddHectareDataRowFrame extends JFrame{
             }
         });
         ///заповнюєть випадаючий список всіма можливими варіантами машин
-        machinesComboBox = new JComboBox(machinesService.getAllMachinesName());
+        machinesComboBox = new JComboBox(machineService.getAllMachinesName());
         ///в початковий момент вибраний 1 item в списку машин
         machineSelected = (String) machinesComboBox.getItemAt(0);
         ///записується у змінну те що вибрали у випадайці
@@ -134,7 +132,7 @@ public class AddHectareDataRowFrame extends JFrame{
                 String value = addMachineField.getText().trim();
                 if(!value.equals("")) {
                     ///Всі назви машинно-тракторних агрегатів
-                    String[] allMachines = machinesService.getAllMachinesName();
+                    String[] allMachines = machineService.getAllMachinesName();
                     ///якщо false то введенего значення немає в базі
                     boolean flag = false;
                     for (int i = 0; i < allMachines.length; i++) {
@@ -147,7 +145,7 @@ public class AddHectareDataRowFrame extends JFrame{
                     }
                     //якщо введене значення не повторяється то воно записуєтсья в базу
                     if (!flag) {
-                        machinesService.createMachine(addMachineField.getText().trim());
+                        machineService.createMachine(addMachineField.getText().trim());
                         AddHectareDataRowFrame operations = new AddHectareDataRowFrame( driver, checkedMonth,  month,  year,  mainInfoFrame);
                         AddHectareDataRowFrame.this.dispose();
                     }else JOptionPane.showMessageDialog(null, "Машинно-тракторний агрегат " + value + " вже існує",

@@ -4,6 +4,8 @@ import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.dao.machinesunit.MachinesDAOImpl;
 import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.MachineService;
+import com.agricultural.service.MachineServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 
 import javax.swing.*;
@@ -18,7 +20,7 @@ import java.awt.event.ActionListener;
 public class AddHourDataRowFrame extends JFrame{
 
     private OperationDAOImpl operationService = new OperationDAOImpl();
-    private MachinesDAOImpl machinesService = new MachinesDAOImpl();
+    private MachineService machineService = MachineServiceImpl.getInstance();
     private InformationHectareDAOImpl infService = new InformationHectareDAOImpl();
 
     private JComboBox operationComboBox;
@@ -65,7 +67,7 @@ public class AddHourDataRowFrame extends JFrame{
             }
         });
         ///заповнюєть випадаючий список всіма можливими варіантами машин
-        machinesComboBox = new JComboBox(machinesService.getAllMachinesName());
+        machinesComboBox = new JComboBox(machineService.getAllMachinesName());
         ///в початковий момент вибраний 1 item в списку машин
         machineSelected = (String) machinesComboBox.getItemAt(0);
         ///записується у змінну те що вибрали у випадайці
@@ -127,7 +129,7 @@ public class AddHourDataRowFrame extends JFrame{
                 String value = addMachineField.getText().trim();
                 if(!value.equals("")) {
                     ///Всі назви машинно-тракторних агрегатів
-                    String[] allMachines = machinesService.getAllMachinesName();
+                    String[] allMachines = machineService.getAllMachinesName();
                     ///якщо false то введенего значення немає в базі
                     boolean flag = false;
                     for (int i = 0; i < allMachines.length; i++) {
@@ -140,7 +142,7 @@ public class AddHourDataRowFrame extends JFrame{
                     }
                     //якщо введене значення не повторяється то воно записуєтсья в базу
                     if (!flag) {
-                        machinesService.createMachine(addMachineField.getText().trim());
+                        machineService.createMachine(addMachineField.getText().trim());
                         AddHourDataRowFrame operations = new AddHourDataRowFrame( driver, checkedMonth,  month,  year,  mainInfoFrame);
                         AddHourDataRowFrame.this.dispose();
                     }else JOptionPane.showMessageDialog(null, "Машинно-тракторний агрегат " + value + " вже існує",

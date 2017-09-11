@@ -13,6 +13,15 @@ import java.util.ArrayList;
  */
 public class MachinesDAOImpl implements MachinesDAO {
 
+    private static MachinesDAOImpl instance = new MachinesDAOImpl();
+
+    private MachinesDAOImpl() {
+    }
+
+    public static MachinesDAOImpl getInstance() {
+        return instance;
+    }
+
     private EntityManager session;
 
     public void createMachine(String machineName) {

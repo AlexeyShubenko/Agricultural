@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Alexey on 13.02.2017.
  */
-///для фыксування початкового положення вікна
+///для фіксування початкового положення вікна
 public class FrameLocation {
 
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

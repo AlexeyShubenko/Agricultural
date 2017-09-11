@@ -14,6 +14,8 @@ import com.agricultural.domains.hoursvirobitok.HourTable;
 import com.agricultural.domains.main.MachineTractorUnit;
 import com.agricultural.domains.main.TechnologicalOperation;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.MachineService;
+import com.agricultural.service.MachineServiceImpl;
 import org.hibernate.query.Query;
 
 import javax.persistence.EntityManager;
@@ -29,7 +31,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
     private EntityManager session;
 
     private OperationDAOImpl operationService = new OperationDAOImpl();
-    private MachinesDAOImpl machinesService = new MachinesDAOImpl();
+    private MachineService machineService = MachineServiceImpl.getInstance();
 
     ///створити метод для перевірки наявності hectare table i dateAndInformation що повязані з driver-ом
 
@@ -197,7 +199,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
         EntityTransaction tx = session.getTransaction();
 
         TechnologicalOperation operation = operationService.getOperationByName(operationName);
-        MachineTractorUnit machine = machinesService.getMachineByName(machineName);
+        MachineTractorUnit machine = machineService.getMachineByName(machineName);
         DetailDataHectare detailDataHectare = new DetailDataHectare();
         try{
             tx.begin();
@@ -432,7 +434,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         TechnologicalOperation operation = operationService.getOperationByName(operationName);
-        MachineTractorUnit machine = machinesService.getMachineByName(machineName);
+        MachineTractorUnit machine = machineService.getMachineByName(machineName);
 
         try{
             tx.begin();

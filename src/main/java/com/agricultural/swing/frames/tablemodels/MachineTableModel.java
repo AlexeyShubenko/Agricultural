@@ -1,9 +1,9 @@
 package com.agricultural.swing.frames.tablemodels;
 
 import com.agricultural.dao.machinesunit.MachinesDAOImpl;
-import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.main.MachineTractorUnit;
-import com.agricultural.domains.main.TechnologicalOperation;
+import com.agricultural.service.MachineService;
+import com.agricultural.service.MachineServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class MachineTableModel extends AbstractTableModel {
 
-    private MachinesDAOImpl service = new MachinesDAOImpl();
+    private MachineService machineService = MachineServiceImpl.getInstance();
 
     private ArrayList<MachineTractorUnit> machines;
     private String[] columnNames = {"№", "Машинно тракторний агрегат","Видалити"};
@@ -44,7 +44,7 @@ public class MachineTableModel extends AbstractTableModel {
             int row = updatesNumber.get(i);
             ///оновлення  данних, та відправлення запроу в базу
             machines.get(row).setName(data[row][1]);
-            service.editMachine(machines.get(row));
+            machineService.editMachine(machines.get(row));
         }
     }
 

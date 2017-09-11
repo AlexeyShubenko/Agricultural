@@ -6,7 +6,6 @@ import com.agricultural.domains.main.TechnologicalOperation;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablemodels.OperationTableModel;
 import com.agricultural.swing.frames.tablerenderer.OperationMachineCellRenderer;
-import com.agricultural.swing.listeners.AddOperationListener;
 
 import javax.swing.*;
 import java.awt.*;
