@@ -1,8 +1,10 @@
 package com.agricultural.swing.frames.tablemodels;
 
 import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.tractordrivers.TractorDriverDAOImpl;
+import com.agricultural.dao.tractordrivers.TractorDriverDaoImpl;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
+import com.agricultural.service.TractorDriverService;
+import com.agricultural.service.impl.TractorDriverServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
  */
 public class MainInformationHourTableModel extends AbstractTableModel {
 
-    private TractorDriverDAOImpl service = new TractorDriverDAOImpl();
+    private TractorDriverService tractorDriverService = TractorDriverServiceImpl.getInstance();
 
     private String[] columnNames = {"№", "Технологічна операція","Машино-тракторний агрегат","Відпрацьовано годин",
     "Отримано палива, л", "Витрата палива, л/год", "Вартість робіт, грн/год", "Загальна вартість робіт, грн","->","delete"};

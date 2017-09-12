@@ -1,7 +1,6 @@
 package com.agricultural.swing.frames.tablemodels;
 
 import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.tractordrivers.TractorDriverDAOImpl;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 
 import javax.swing.*;

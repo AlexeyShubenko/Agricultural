@@ -13,6 +13,15 @@ import java.util.ArrayList;
  */
 public class OperationDAOImpl implements OperationsDAO {
 
+    private static OperationDAOImpl instance = new OperationDAOImpl();
+
+    private OperationDAOImpl() {
+    }
+
+    public static OperationDAOImpl getInstance() {
+        return instance;
+    }
+
     private EntityManager session;
 
     public void createOperation(String operationName) {

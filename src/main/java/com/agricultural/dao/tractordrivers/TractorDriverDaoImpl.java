@@ -19,7 +19,16 @@ import java.util.List;
 /**
  * Created by Alexey on 14.02.2017.
  */
-public class TractorDriverDAOImpl implements TractorDriverDAO {
+public class TractorDriverDaoImpl implements TractorDriverDao {
+
+    private static TractorDriverDaoImpl instance = new TractorDriverDaoImpl();
+
+    private TractorDriverDaoImpl() {
+    }
+
+    public static TractorDriverDaoImpl getInstance() {
+        return instance;
+    }
 
     private EntityManager session;
 

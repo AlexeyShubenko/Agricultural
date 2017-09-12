@@ -1,9 +1,10 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.workplaces.WorkplaceDAOImpl;
+import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.main.Workplace;
+import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.impl.WorkplaceServiceImpl;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  */
 public class WorkplaceTableModel extends AbstractTableModel {
 
-    private WorkplaceDAOImpl service = new WorkplaceDAOImpl();
+    private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
 
     private ArrayList<Workplace> workplaces;
     private String[] columnNames = {"№", "За місцем роботи","Видалити"};
@@ -57,7 +58,7 @@ public class WorkplaceTableModel extends AbstractTableModel {
 //            } else {
                 ///оновлення  данних, та відправлення запросу в базу
                 workplaces.get(row).setWorkPlaceName(data[row][1]);
-                service.editWorkplace(workplaces.get(row));
+                workplaceService.editWorkplace(workplaces.get(row));
 
 //            }
         }

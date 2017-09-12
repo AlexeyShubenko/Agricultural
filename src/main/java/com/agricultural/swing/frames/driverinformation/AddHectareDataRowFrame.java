@@ -4,7 +4,9 @@ import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.main.TractorDriver;
 import com.agricultural.service.MachineService;
+import com.agricultural.service.OperationService;
 import com.agricultural.service.impl.MachineServiceImpl;
+import com.agricultural.service.impl.OperationServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 
 import javax.swing.*;
@@ -18,7 +20,7 @@ import java.awt.event.ActionListener;
 ///вікно з полями для введення даних для одного рядка
 public class AddHectareDataRowFrame extends JFrame{
 
-    private OperationDAOImpl operationService = new OperationDAOImpl();
+    private OperationService operationService = OperationServiceImpl.getInstance();
     private MachineService machineService = MachineServiceImpl.getInstance();
     private InformationHectareDAOImpl infService = new InformationHectareDAOImpl();
 

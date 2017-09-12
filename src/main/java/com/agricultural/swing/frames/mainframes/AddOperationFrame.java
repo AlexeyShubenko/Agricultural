@@ -1,6 +1,8 @@
 package com.agricultural.swing.frames.mainframes;
 
 import com.agricultural.dao.operations.OperationDAOImpl;
+import com.agricultural.service.OperationService;
+import com.agricultural.service.impl.OperationServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 
 import javax.swing.*;
@@ -14,8 +16,7 @@ import java.awt.event.ActionListener;
 //class is not used now
 public class AddOperationFrame extends JFrame {
 
-    private OperationDAOImpl service = new OperationDAOImpl();
-
+    private OperationService operationService = OperationServiceImpl.getInstance();
     private JPanel panel = new JPanel();
     private JLabel label = new JLabel("Операція");
     private JTextField textField = new JTextField(20);
@@ -42,7 +43,7 @@ public class AddOperationFrame extends JFrame {
                 String value = textField.getText().trim();
                 if(!value.equals("")) {
                     ///зчитується для перевірки на наявність
-                    String[] allOperations = service.getAllOperationsName();
+                    String[] allOperations = operationService.getAllOperationsName();
 
                     ///якщо false то введенего значення немає в базі
                     boolean flag = false;
@@ -55,7 +56,7 @@ public class AddOperationFrame extends JFrame {
                     }
                     //якщо введене значення не повторяється то воно записуєтсья в базу
                     if(!flag){
-                        service.createOperation(textField.getText());
+                        operationService.createOperation(textField.getText());
                         TechnoOperationsFrame operations = new TechnoOperationsFrame();
                         dispose();
                     }else JOptionPane.showMessageDialog(null, "Технологічна оперція " + value + " вже існує",

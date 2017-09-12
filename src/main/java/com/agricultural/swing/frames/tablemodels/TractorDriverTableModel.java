@@ -1,12 +1,11 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.machinesunit.MachinesDAOImpl;
-import com.agricultural.dao.tractordrivers.TractorDriverDAOImpl;
-import com.agricultural.domains.main.MachineTractorUnit;
+import com.agricultural.dao.tractordrivers.TractorDriverDaoImpl;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.TractorDriverService;
+import com.agricultural.service.impl.TractorDriverServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableColumn;
 import java.util.ArrayList;
 
 /**
@@ -14,13 +13,12 @@ import java.util.ArrayList;
  */
 public class TractorDriverTableModel extends AbstractTableModel {
 
-    private TractorDriverDAOImpl service = new TractorDriverDAOImpl();
+    private TractorDriverService tractorDriverService = TractorDriverServiceImpl.getInstance();
 
     private ArrayList<TractorDriver> drivers;
     private String[] columnNames = {"№", "Працівник","Тарифна ставка","Посада","За місцем роботи","Редагувати","Детальна інформація","Видалити"};
     private String[][] data;
 
-//    private ArrayList<Integer> updatesNumber = new ArrayList();
     private final Integer COLUMN_NUMBER = 8;
     private final Integer UNCHANGEABLE_COLUMN_NUMBER = 0;
 
@@ -59,7 +57,7 @@ public class TractorDriverTableModel extends AbstractTableModel {
 ////            drivers.get(row).setWageRate(Integer.valueOf(data[row][2]));
 ////            drivers.get(row).setPosition(data[row][3]);
 ////            drivers.get(row).getWorkplace(data[row][4]);
-////            service.editTractorDriver(drivers.get(row));
+////            tractorDriverService.editTractorDriver(drivers.get(row));
 ////        }
 //    }
 

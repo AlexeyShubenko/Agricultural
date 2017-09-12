@@ -1,16 +1,16 @@
 package com.agricultural.swing.frames.mainframes;
 
-import com.agricultural.dao.workplaces.WorkplaceDAOImpl;
+import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.main.TractorDriver;
 import com.agricultural.domains.main.Workplace;
+import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.impl.WorkplaceServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablemodels.WorkplaceTableModel;
 import com.agricultural.swing.frames.tablerenderer.OperationMachineCellRenderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class WorkPlaceFrame extends JFrame {
 
-    private WorkplaceDAOImpl service = new WorkplaceDAOImpl();
+    private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
 
     private JPanel mainPanel = new JPanel();
     private JTextField textField = new JTextField(20);
@@ -54,7 +54,7 @@ public class WorkPlaceFrame extends JFrame {
                 String value = textField.getText().trim();
                 if(!value.equals("")) {
                     ///зчитується для перевірки на наявність
-                    String[] allWorkPlaces = service.getAllWorkplaceName();
+                    String[] allWorkPlaces = workplaceService.getAllWorkplaceName();
 
                     ///якщо false то введенего значення немає в базі
                     boolean flag = false;
@@ -67,7 +67,7 @@ public class WorkPlaceFrame extends JFrame {
                     }
                     //якщо введене значення не повторяється то воно записуєтсья в базу
                     if(!flag){
-                        service.createWorkPlace(textField.getText());
+                        workplaceService.createWorkPlace(textField.getText());
                         this.dispose();
                         this.ownFrame.dispose();
                         AddTractorDriverFrame addTractorDriverFrame = new AddTractorDriverFrame(driver, tractorDriversFrame);
@@ -90,7 +90,7 @@ public class WorkPlaceFrame extends JFrame {
             workPlaceFrame.setOwnFrame(addTractorDriverFrame);
         });
 
-        workplaces = service.getWorkplaces();
+        workplaces = workplaceService.getWorkplaces();
         workplaceTableModel = new WorkplaceTableModel(workplaces);
         JTable workPlaceTable = new JTable(workplaceTableModel);
         workPlaceTable.setRowHeight(30);
@@ -117,7 +117,7 @@ public class WorkPlaceFrame extends JFrame {
                                     "Ви впевнені, що хочете видалити пункт " + workplaces.get(i).getWorkPlaceName() + "?",
                                     "Увага!", JOptionPane.YES_NO_OPTION);
                             if(isDelete==0){
-                                service.deleteWorPlace(workplaces.get(i));
+                                workplaceService.deleteWorPlace(workplaces.get(i));
                                 dispose();
                                 ownFrame.dispose();
                                 AddTractorDriverFrame addTractorDriverFrame = new AddTractorDriverFrame(driver, tractorDriversFrame);

@@ -3,6 +3,8 @@ package com.agricultural.swing.frames.mainframes;
 import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.ExcelDataWriter;
 import com.agricultural.domains.main.TechnologicalOperation;
+import com.agricultural.service.OperationService;
+import com.agricultural.service.impl.OperationServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablemodels.OperationTableModel;
 import com.agricultural.swing.frames.tablerenderer.OperationMachineCellRenderer;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
  */
 public class TechnoOperationsFrame extends JFrame {
 
-    private OperationDAOImpl service = new OperationDAOImpl();
+    private OperationService operationService = OperationServiceImpl.getInstance();
 
     private  JButton writeExcel = new JButton("Експортувати в Excel");
 
@@ -55,7 +57,7 @@ public class TechnoOperationsFrame extends JFrame {
         Container container = this.getContentPane();
         mainPanel.setLayout(new GridLayout(1,1));
 
-        operations = service.getOperations();
+        operations = operationService.getOperations();
 
         ///модель талиці для технологічної операції
         operationTableModel = new OperationTableModel(operations);
@@ -95,7 +97,7 @@ public class TechnoOperationsFrame extends JFrame {
                                 "Ви впевнені, що хочете видалити технологічну опрерацію " + "\"value\"" + "?",
                                 "Увага!", JOptionPane.YES_NO_OPTION);
                         if (isDelete == 0) {
-                            service.deleteOperation(operations.get(i));
+                            operationService.deleteOperation(operations.get(i));
                             TechnoOperationsFrame.this.dispose();
                             TechnoOperationsFrame operationsFrame = new TechnoOperationsFrame();
                         }
@@ -111,7 +113,7 @@ public class TechnoOperationsFrame extends JFrame {
                 String value = newOperationTextField.getText().trim();
                 if(!value.equals("")) {
                     ///зчитується для перевірки на наявність
-                    String[] allOperations = service.getAllOperationsName();
+                    String[] allOperations = operationService.getAllOperationsName();
                     ///якщо false то введенего значення немає в базі
                     boolean flag = false;
                     for(int i=0; i<allOperations.length;i++) {
@@ -123,7 +125,7 @@ public class TechnoOperationsFrame extends JFrame {
                     }
                     //якщо введене значення не повторяється то воно записуєтсья в базу
                     if(!flag){
-                        service.createOperation(newOperationTextField.getText());
+                        operationService.createOperation(newOperationTextField.getText());
                         TechnoOperationsFrame operations = new TechnoOperationsFrame();
                         dispose();
                     }else JOptionPane.showMessageDialog(null, "Технологічна оперція " + value + " вже існує",

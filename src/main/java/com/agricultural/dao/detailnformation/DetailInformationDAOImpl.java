@@ -22,14 +22,12 @@ public class DetailInformationDAOImpl implements DetailInformationDAO{
     @Override
     public void deleteDetailDataHectare(Long dataId){
 
-//        DetailDataHectare detailDataHectare = getDetailDataHectare(dataId);
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         try{
             tx.begin();
             session.createQuery("delete DetailDataHectare where driverDataHectare.data_id=:id")
                     .setParameter("id",dataId).executeUpdate();
-//            session.remove(detailDataHectare);
             tx.commit();
         }catch(Exception e){
             if (tx != null) {
@@ -51,7 +49,7 @@ public class DetailInformationDAOImpl implements DetailInformationDAO{
         try{
             tx.begin();
             Query<DetailDataHectare> detailDataHectareQuery =
-                    (Query<DetailDataHectare>) session.createQuery("from DetailDataHectare where driverDataHectare.data_id =:data_id");
+                    (Query<DetailDataHectare>) session.createQuery("from DetailDataHectare where driverDataHectare.data_id =:dataId");
             detailDataHectareQuery.setParameter("dataId",dataId);
             detailDataHectare = detailDataHectareQuery.getSingleResult();
             tx.commit();
@@ -168,7 +166,7 @@ public class DetailInformationDAOImpl implements DetailInformationDAO{
         try{
             tx.begin();
             Query<DetailDataHour> detailDataHourQuery =
-                    (Query<DetailDataHour>) session.createQuery("from DetailDataHour where driverDataHour.data_id =:data_id");
+                    (Query<DetailDataHour>) session.createQuery("from DetailDataHour where driverDataHour.data_id =:dataId");
             detailDataHourQuery.setParameter("dataId",dataId);
             detailDataHour = detailDataHourQuery.getSingleResult();
             tx.commit();
@@ -209,7 +207,7 @@ public class DetailInformationDAOImpl implements DetailInformationDAO{
     }
 
     @Override
-    public void deleteDetailDataHour(Long dataId){
+    public void deleteDetailDataHour(Long dataId) {
 
         session = HibernateUtil.getSessionFactory().createEntityManager();
         DetailDataHour detailDataHour = getDetailDataHour(dataId);

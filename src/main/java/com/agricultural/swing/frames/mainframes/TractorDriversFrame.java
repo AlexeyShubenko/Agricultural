@@ -2,10 +2,13 @@ package com.agricultural.swing.frames.mainframes;
 
 
 
-import com.agricultural.dao.tractordrivers.TractorDriverDAOImpl;
-import com.agricultural.dao.workplaces.WorkplaceDAOImpl;
+import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.main.Workplace;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.TractorDriverService;
+import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.impl.TractorDriverServiceImpl;
+import com.agricultural.service.impl.WorkplaceServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.driverinformation.MainInfoFrame;
 import com.agricultural.swing.frames.tablemodels.TractorDriverTableModel;
@@ -24,8 +27,8 @@ import java.util.GregorianCalendar;
 
 public class TractorDriversFrame extends JFrame {
 
-    private TractorDriverDAOImpl service = new TractorDriverDAOImpl();
-    private WorkplaceDAOImpl workplaceService = new WorkplaceDAOImpl();
+    private TractorDriverService tractorDriverService = TractorDriverServiceImpl.getInstance();
+    private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
 
     private JPanel panel = new JPanel();
     private JPanel p1 = new JPanel();
@@ -58,7 +61,7 @@ public class TractorDriversFrame extends JFrame {
         setBackground(Color.WHITE);
 
         ///Всі трактористи з бази
-        drivers = sortedDriverMassive(service.getTractorDrivers());
+        drivers = sortedDriverMassive(tractorDriverService.getTractorDrivers());
 
         ///модель талиці для механізаторів
         driverTableModel = new TractorDriverTableModel(drivers);
@@ -113,7 +116,7 @@ public class TractorDriversFrame extends JFrame {
                                 "Увага!", JOptionPane.YES_NO_OPTION);
                         if(isDelete==0) {
                             ///На mainInfFrame передається тракторист дані якого будуть показуватися
-                            service.deleteTractorDriver(drivers.get(i));
+                            tractorDriverService.deleteTractorDriver(drivers.get(i));
                             TractorDriversFrame.this.dispose();
                             TractorDriversFrame newTractorDriversFrame = new TractorDriversFrame();
                         }

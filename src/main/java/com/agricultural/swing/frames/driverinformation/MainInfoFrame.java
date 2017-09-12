@@ -1,8 +1,7 @@
 package com.agricultural.swing.frames.driverinformation;
 
 import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.tractordrivers.TractorDriverDAOImpl;
-import com.agricultural.dao.workplaces.WorkplaceDAOImpl;
+import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.ExcelDataWriter;
 import com.agricultural.domains.Month;
 import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
@@ -10,6 +9,10 @@ import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.main.TractorDriver;
 import com.agricultural.domains.main.Workplace;
+import com.agricultural.service.TractorDriverService;
+import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.impl.TractorDriverServiceImpl;
+import com.agricultural.service.impl.WorkplaceServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.mainframes.TractorDriversFrame;
 import com.agricultural.swing.frames.tablemodels.totalmoney.TotalLastTableCellRenderer;
@@ -21,7 +24,6 @@ import com.agricultural.swing.frames.tablemodels.MainInformationHourTableModel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -85,7 +87,8 @@ public class MainInfoFrame extends JFrame {
 
     private InformationHectareDAOImpl infoService = new InformationHectareDAOImpl();
     private DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
-    private TractorDriverDAOImpl employeeService = new TractorDriverDAOImpl();
+    private TractorDriverService employeeService = TractorDriverServiceImpl.getInstance();
+    private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
 
     private final Integer DEFAULT_X_LOCATION=0;
     private final Integer DEFAULT_Y_LOCATION=0;
@@ -116,6 +119,8 @@ public class MainInfoFrame extends JFrame {
         positionText.setText(driver.getPosition());
         pibText.setText(driver.getName());
         workPlaceText.setText(driver.getWorkplace().getWorkPlaceName());
+        //could not be changed
+        workPlaceText.setEditable(false);
         wageText.setText(String.valueOf(driver.getWageRate()));
 
         ///ComboBox заповнюємо місяцями
@@ -197,17 +202,15 @@ public class MainInfoFrame extends JFrame {
         p3.add(p32,BorderLayout.CENTER);
         p3.add(p33,BorderLayout.SOUTH);
 
-
-        JLabel tovMGMAgro = new JLabel("ОПЕРАТИВНІ ДАНІ ПО ТОВ \"МГМ-АГРО\"");
-        tovMGMAgro.setFont(new Font("Serif", Font.BOLD, 20));
-        headNamePanel.add(tovMGMAgro);
+        JLabel headLabel = new JLabel("ОПЕРАТИВНІ ДАНІ ПІДПРИЄМСТВА");
+        headLabel.setFont(new Font("Serif", Font.BOLD, 20));
+        headNamePanel.add(headLabel);
         headNamePanel.setBackground(Color.GREEN);
 
         headPanel.add(p1, BorderLayout.WEST);
         headPanel.add(p2);
         headPanel.add(p3, BorderLayout.EAST);
         headPanel.add(headNamePanel,BorderLayout.NORTH);
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -412,8 +415,7 @@ public class MainInfoFrame extends JFrame {
 
         ///////////////////////////////////////////////////////////////////////////
         ///listener на кнопку додати Інфу у таблицю гектарний виробіток
-        WorkplaceDAOImpl workPlaceService = new WorkplaceDAOImpl();
-        Workplace headWorkPlace = workPlaceService.getWorkplaceByName(workPlaceText.getText().trim());
+        Workplace headWorkPlace = workplaceService.getWorkplaceByName(workPlaceText.getText().trim());
         findInformation.addActionListener((e)-> {
             ///треба оновлювати данні по працівникам
             ///якщо змінені якісь дані трактористу то оновлюємо їх
@@ -427,9 +429,10 @@ public class MainInfoFrame extends JFrame {
             }
 
             if(isUpdate) {
+                //update workplace
                 if (!headWorkPlace.getWorkPlaceName().equals(workPlaceText.getText().trim())) {
                     headWorkPlace.setWorkPlaceName(workPlaceText.getText().trim());
-                    workPlaceService.editWorkplace(headWorkPlace);
+                    workplaceService.editWorkplace(headWorkPlace);
                     driver.setWorkplace(headWorkPlace);
                 }
 
@@ -440,7 +443,7 @@ public class MainInfoFrame extends JFrame {
                     driver.setWageRate(Integer.valueOf(wageText.getText().trim()));
                     employeeService.editTractorDriver(driver);
                     MainInfoFrame.this.dispose();
-                    driver.setWorkplace(headWorkPlace);
+//                    driver.setWorkplace(headWorkPlace);
                 }
                 this.getEmployeeFrame().dispose();
                 emplFrame = new TractorDriversFrame();

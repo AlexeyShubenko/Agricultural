@@ -2,6 +2,7 @@ package com.agricultural.dao.workplaces;
 
 import com.agricultural.dao.HibernateUtil;
 import com.agricultural.domains.main.Workplace;
+import com.agricultural.service.impl.WorkplaceServiceImpl;
 import org.hibernate.query.Query;
 
 import javax.persistence.EntityManager;
@@ -11,7 +12,16 @@ import java.util.ArrayList;
 /**
  * Created by Alexey on 14.02.2017.
  */
-public class WorkplaceDAOImpl implements WorkplacesDAO {
+public class WorkplaceDaoImpl implements WorkplaceDao {
+
+    private static WorkplaceDaoImpl instance = new WorkplaceDaoImpl();
+
+    private WorkplaceDaoImpl() {
+    }
+
+    public static WorkplaceDaoImpl getInstance() {
+        return instance;
+    }
 
     private EntityManager session;
 
@@ -97,14 +107,14 @@ public class WorkplaceDAOImpl implements WorkplacesDAO {
     }
 
     @Override
-    public Workplace getWorkplaceByName(String operationName) {
+    public Workplace getWorkplaceByName(String workplaceName) {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         Workplace workplace = null;
         try{
             tx.begin();
-            Query<Workplace> query = (Query<Workplace>) session.createQuery("from Workplace where workPlaceName=:name");
-            query.setParameter("name",operationName);
+            Query<Workplace> query = (Query<Workplace>) session.createQuery("from Workplace where workPlaceName=:workplaceName");
+            query.setParameter("workplaceName",workplaceName);
             workplace =  query.getSingleResult();
             tx.commit();
         }catch(Exception e){

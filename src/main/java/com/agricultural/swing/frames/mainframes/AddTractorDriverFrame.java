@@ -1,16 +1,17 @@
 package com.agricultural.swing.frames.mainframes;
 
-import com.agricultural.dao.tractordrivers.TractorDriverDAOImpl;
-import com.agricultural.dao.workplaces.WorkplaceDAOImpl;
+import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.RegExp;
 import com.agricultural.domains.main.Workplace;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.TractorDriverService;
+import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.impl.TractorDriverServiceImpl;
+import com.agricultural.service.impl.WorkplaceServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ import java.util.ArrayList;
  */
 public class AddTractorDriverFrame extends JFrame {
 
-    private TractorDriverDAOImpl service = new TractorDriverDAOImpl();
-    private WorkplaceDAOImpl workplaceService = new WorkplaceDAOImpl();
+    private TractorDriverService tractorDriverService = TractorDriverServiceImpl.getInstance();
+    private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
 
     private JButton save = new JButton("Зберегти");
     private JButton cancel = new JButton("Закрити");
@@ -118,7 +119,7 @@ public class AddTractorDriverFrame extends JFrame {
                     if (RegExp.allNumbers(wageValue)) {
                         ///якщо ставка введена правильно то виконється далі
                         ///зчитаєються імена всіх трактористів
-                        String[] allTractorDrivers = service.getAllTractorDriversName();
+                        String[] allTractorDrivers = tractorDriverService.getAllTractorDriversName();
 
                         boolean flag = false;
                         for (int i = 0; i < allTractorDrivers.length; i++) {
@@ -138,7 +139,7 @@ public class AddTractorDriverFrame extends JFrame {
                                 newDriver.setPosition(positionValue);
                                 newDriver.setWorkplace(workplaces.get(workPlaceComboBox.getSelectedIndex()));
 
-                                service.createOrUpdateTractorDriver(newDriver);
+                                tractorDriverService.createOrUpdateTractorDriver(newDriver);
                                 ownerTractorDriversFrame.dispose();
                                 TractorDriversFrame frame = new TractorDriversFrame();
                                 this.dispose();
@@ -153,7 +154,7 @@ public class AddTractorDriverFrame extends JFrame {
                             driver.setWageRate(Integer.parseInt(wageValue));
                             driver.setPosition(positionValue);
                             driver.setWorkplace(workplaces.get(workPlaceComboBox.getSelectedIndex()));
-                            service.createOrUpdateTractorDriver(driver);
+                            tractorDriverService.createOrUpdateTractorDriver(driver);
                             ownerTractorDriversFrame.dispose();
                             TractorDriversFrame frame = new TractorDriversFrame();
                             this.dispose();

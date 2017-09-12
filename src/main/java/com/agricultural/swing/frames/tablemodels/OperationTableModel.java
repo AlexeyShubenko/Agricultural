@@ -2,6 +2,8 @@ package com.agricultural.swing.frames.tablemodels;
 
 import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.main.TechnologicalOperation;
+import com.agricultural.service.OperationService;
+import com.agricultural.service.impl.OperationServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -11,7 +13,9 @@ import java.util.ArrayList;
  */
 public class OperationTableModel extends AbstractTableModel {
 
-    private OperationDAOImpl service = new OperationDAOImpl();
+
+
+    private OperationService operationService = OperationServiceImpl.getInstance();
 
     private ArrayList<TechnologicalOperation> operations;
     private String[] columnNames = {"№", "Технологічна операція","Видалити"};
@@ -43,7 +47,7 @@ public class OperationTableModel extends AbstractTableModel {
             int row = updatesNumber.get(i);
             ///оновлення  данних, та відправлення запросу в базу
             operations.get(row).setName(data[row][1]);
-            service.editOperation(operations.get(row));
+            operationService.editOperation(operations.get(row));
         }
     }
 

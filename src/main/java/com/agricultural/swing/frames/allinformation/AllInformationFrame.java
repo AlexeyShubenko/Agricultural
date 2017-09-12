@@ -1,13 +1,16 @@
 package com.agricultural.swing.frames.allinformation;
 
 import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.tractordrivers.TractorDriverDAOImpl;
-import com.agricultural.dao.workplaces.WorkplaceDAOImpl;
+import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.Month;
 import com.agricultural.domains.main.Workplace;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.TractorDriverService;
+import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.impl.TractorDriverServiceImpl;
+import com.agricultural.service.impl.WorkplaceServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablemodels.AllInformationTableModel;
 
@@ -42,8 +45,8 @@ public class AllInformationFrame extends JFrame{
     private int checkedYear;
     private JButton refreshButton = new JButton("Оновити");
 
-    private WorkplaceDAOImpl workplaceService = new WorkplaceDAOImpl();
-    private TractorDriverDAOImpl employeeService = new TractorDriverDAOImpl();
+    private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
+    private TractorDriverService employeeService = TractorDriverServiceImpl.getInstance();
     private InformationHectareDAOImpl infoService = new InformationHectareDAOImpl();
 
     private final Integer DEFAULT_X_LOCATION=0;
@@ -52,7 +55,7 @@ public class AllInformationFrame extends JFrame{
     private final Integer TABLE_WIDTH = FrameLocation.screenSize.width+200;
     private final Integer TABLE_HEIGHT = Math.round(FrameLocation.screenSize.height/7f);
 
-    private final Integer FRAME_WIDTH = FrameLocation.screenSize.width;
+    private final Integer FRAME_WIDTH = FrameLocation.screenSize.width+500;
     private final Integer FRAME_HEIGHT = FrameLocation.screenSize.height;
 
     private final Font TABLE_FONT = new Font("Serif", Font.PLAIN, 18);
@@ -62,7 +65,7 @@ public class AllInformationFrame extends JFrame{
 
     public AllInformationFrame(int month, int year){
         super("Зведена інформація");
-        this.setBounds(DEFAULT_X_LOCATION,DEFAULT_Y_LOCATION,FRAME_WIDTH+500,FRAME_HEIGHT);
+        this.setBounds(DEFAULT_X_LOCATION,DEFAULT_Y_LOCATION,FRAME_WIDTH,FRAME_HEIGHT);
         this.setVisible(true);
 
         checkedMonth = month;
@@ -106,7 +109,6 @@ public class AllInformationFrame extends JFrame{
         ////////////////////////////////////////////////////
         /////////////////ГЕКТАРНИЙ ВИРОБІТОК////////////////
         ////////////////////////////////////////////////////
-        /////
         for (int i = 0; i < workplaces.size(); i++) {
             JPanel infoPanel = new JPanel();
             Border border = BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY);
