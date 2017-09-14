@@ -1,13 +1,11 @@
 package com.agricultural.dao.hectareinformation;
 
 import com.agricultural.dao.HibernateUtil;
-import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.DataMassive;
 import com.agricultural.domains.main.DateAndInformation;
 import com.agricultural.domains.gectarniyvirobitok.DetailDataHectare;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.gectarniyvirobitok.HectareTable;
-import com.agricultural.domains.hoursvirobitok.DetailDataHour;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.hoursvirobitok.HourTable;
 import com.agricultural.domains.main.MachineTractorUnit;
@@ -27,7 +25,15 @@ import java.util.List;
 /**
  * Created by Alexey on 26.02.2017.
  */
-public class InformationHectareDAOImpl implements InformationHectareDAO {
+public class InformationHectareDaoImpl implements InformationHectareDao {
+
+    private static InformationHectareDaoImpl instance = new InformationHectareDaoImpl();
+
+    private InformationHectareDaoImpl(){}
+
+    public static InformationHectareDaoImpl getInstance() {
+        return instance;
+    }
 
     private EntityManager session;
 
@@ -79,8 +85,8 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
         }
     }
 
-    ///достає hectaretable_id по id dateAndInformation table
-    public  HectareTable getHectareTable_idByDateAndInformationId(Long dateId){
+    ///достає hectare table по id dateAndInformation table
+    public  HectareTable getHectareTableIdByDateAndInformationId(Long dateId){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         HectareTable hectareTable = null;
@@ -101,7 +107,8 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
     }
 
     ///достає dateAndInformation по driverId
-    public List<DateAndInformation> getDateAndAllInformationByDriverId(Long driverId){
+    @Override
+    public List<DateAndInformation> getListDateAndAllInformationByDriverId(Long driverId){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         List<DateAndInformation> dateAndInformation = null;
@@ -124,7 +131,8 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
         return dateAndInformation;
     }
 
-    public void deleteHectareHourTable(Long id,String hectOrHour) {
+    @Override
+    public void deleteHectareHourTable(Long id, String hectOrHour) {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         try{
@@ -142,6 +150,8 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
             session.close();
         }
     }
+
+    @Override
     public void deleteDateAndInformation(Long id) {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -160,6 +170,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
 
 
     ///достає dateAndInformation по driverId
+    @Override
     public DateAndInformation getDateAndAllInformationByDriverId(Long driverId,String month,int year){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -187,6 +198,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
     }
 
     ///метод для перевірки наявності даного запису в таблиці з такими даними
+    @Override
     public boolean isDateAndInformationExist(Long driverId,String month,int year){
         DateAndInformation dateAndInformation = this.getDateAndAllInformationByDriverId(driverId,month,year);
         return dateAndInformation==null?false:true;
@@ -195,6 +207,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //для збереження в hectareTable
 
+    @Override
     public boolean saveOneRowHectareInf(Long driverId, String operationName, String machineName, String month, int year){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -213,8 +226,9 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
             DateAndInformation dateAndInformation = queryDateAndInf.getSingleResult();
 
             ///зчитуэмо потрбні дані з hectare table
-            Query<HectareTable> queryHectareTable = (Query<HectareTable>) session.createQuery("from  HectareTable where dateAndInformation.date_id=:driverId");
-            queryHectareTable.setParameter("date_id", dateAndInformation.getDate_id());
+            Query<HectareTable> queryHectareTable =
+                    (Query<HectareTable>) session.createQuery("from  HectareTable where dateAndInformation.date_id=:dateId");
+            queryHectareTable.setParameter("dateId", dateAndInformation.getDate_id());
             HectareTable hectareTable = queryHectareTable.getSingleResult();
 
             ArrayList<DriverDataHectare> tempArray;
@@ -271,6 +285,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
         return false;
     }
 
+    @Override
     public List<DriverDataHectare> getAllHectareInf(Long driverId, String month, int year){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -280,7 +295,8 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
             tx.begin();
 
             ///зчитуємо потрібні дані з DatAndInformation
-            Query<DateAndInformation> queryDateAndInf = (Query<DateAndInformation>) session.createQuery("from DateAndInformation where driver.driver_id=:driverId " +
+            Query<DateAndInformation> queryDateAndInf =
+                    (Query<DateAndInformation>) session.createQuery("from DateAndInformation where driver.driver_id=:driverId " +
                     "and month=:month and year=:year");
             queryDateAndInf.setParameter("driverId",driverId);
             queryDateAndInf.setParameter("month", month);
@@ -288,11 +304,13 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
             DateAndInformation dateAndInformation = queryDateAndInf.getSingleResult();
 
             ///зчитуэмо потрбні дані з hectare table
-            Query<HectareTable> queryHectareTable = (Query<HectareTable>) session.createQuery("from  HectareTable where dateAndInformation.date_id=:driverId");
-            queryHectareTable.setParameter("date_id", dateAndInformation.getDate_id());
+            Query<HectareTable> queryHectareTable =
+                    (Query<HectareTable>) session.createQuery("from  HectareTable where dateAndInformation.date_id=:dateId");
+            queryHectareTable.setParameter("dateId", dateAndInformation.getDate_id());
             HectareTable hectareTable = queryHectareTable.getSingleResult();
 
-            Query<DriverDataHectare> queryDriverData = (Query<DriverDataHectare>) session.createQuery("from DriverDataHectare where hectareTable.hect_id=:hectId");
+            Query<DriverDataHectare> queryDriverData =
+                    (Query<DriverDataHectare>) session.createQuery("from DriverDataHectare where hectareTable.hect_id=:hectId");
             queryDriverData.setParameter("hectId",hectareTable.getHect_id());
             hectareInf = queryDriverData.getResultList();
 
@@ -308,6 +326,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
         return hectareInf;
     }
 
+    @Override
     public DriverDataHectare getDriverDataHectareById(Long dataId){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -332,6 +351,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
     }
 
     ///отримати масив driverDataHectare
+    @Override
     public List<DriverDataHectare> getDriverDataHectareByHectareTableId(Long hectId){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -356,6 +376,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
     }
 
     ////зберігаються внесені дані
+    @Override
     public void editDriverDataHectare(DriverDataHectare driverDataHectare){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -377,6 +398,7 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
 
 
     ////зберігаються внесені дані
+    @Override
     public List<DriverDataHectare> getDriverDataHectareByOperationMachine(String operationName){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -399,24 +421,15 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
     }
 
     ///видаляє дані з таблиці DriverDataHectare
-    public void deleteDriverDataHectareHour(DriverDataHectare driverDataHectareToDelete, DriverDataHour driverDataHourToDelete){
+    @Override
+    public void deleteDriverDataHectare(DriverDataHectare driverDataHectareToDelete){
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         try{
             tx.begin();
-            if(driverDataHectareToDelete!=null) {
                 driverDataHectareToDelete.setHectareTable(null);
                 session.createQuery("delete DriverDataHectare where data_id=:id")
                         .setParameter("id",driverDataHectareToDelete.getData_id()).executeUpdate();
-//                session.remove(driverDataHectareToDelete);
-            }else{
-                if(driverDataHourToDelete!=null){
-                    driverDataHourToDelete.setHourTable(null);
-                    session.createQuery("delete DriverDataHour where data_id=:id")
-                            .setParameter("id",driverDataHourToDelete.getData_id()).executeUpdate();
-//                    session.remove(driverDataHourToDelete);
-                }
-            }
             tx.commit();
         }catch(Exception e){
             if (tx != null) {
@@ -427,212 +440,5 @@ public class InformationHectareDAOImpl implements InformationHectareDAO {
             tx =null;
         }
     }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//для збереження в hourTable
-
-    public boolean saveOneRowHOURInf(Long driverId, String operationName, String machineName, String month, int year){
-        session = HibernateUtil.getSessionFactory().createEntityManager();
-        EntityTransaction tx = session.getTransaction();
-        TechnologicalOperation operation = operationService.getOperationByName(operationName);
-        MachineTractorUnit machine = machineService.getMachineByName(machineName);
-
-        try{
-            tx.begin();
-            ///зчитуємо потрібні дані з DatAndInformation
-            Query<DateAndInformation> queryDateAndInf = (Query<DateAndInformation>) session.createQuery("from DateAndInformation where driver.driver_id=:driverId " +
-                    "and month=:month and year=:year");
-            queryDateAndInf.setParameter("year", year);
-            queryDateAndInf.setParameter("driverId",driverId);
-            queryDateAndInf.setParameter("month", month);
-            DateAndInformation dateAndInformation = queryDateAndInf.getSingleResult();
-
-            ///зчитуэмо потрбні дані з hour table
-            Query<HourTable> queryHourTable = (Query<HourTable>) session.createQuery("from  HourTable where dateAndInformation.date_id=:dateId");
-            queryHourTable.setParameter("dateId", dateAndInformation.getDate_id());
-            HourTable hourTable = queryHourTable.getSingleResult();
-
-            ArrayList<DriverDataHour> tempArray;
-            ///перевірка на наяність вже таких даних
-            Query<DriverDataHour> queryData = (Query<DriverDataHour>) session.createQuery("from DriverDataHour where hourTable.hour_id=:hourId");
-            queryData.setParameter("hourId", hourTable.getHour_id());
-            tempArray = (ArrayList<DriverDataHour>) queryData.list();
-
-            boolean flag = false;
-
-            for(int i = 0; i<tempArray.size(); i++){
-                DriverDataHour oneRow = tempArray.get(i);
-                ///якщо запис з такими даними є то flag=true
-                if((oneRow.getMachine().getName().equals(machine.getName()))
-                        &&(oneRow.getOperation().getName().equals(operation.getName()))
-                        &&(oneRow.getHourTable().getHour_id()==hourTable.getHour_id())){
-                    flag=true;
-                    break;
-                }
-            }
-            if(!flag) {
-                ///добавили інформацію в таблицю для одного рядка
-                DriverDataHour oneRowHourInformation = new DriverDataHour();
-                oneRowHourInformation.setOperation(operation);
-                oneRowHourInformation.setMachine(machine);
-
-                hourTable.getHourData().add(oneRowHourInformation);
-                oneRowHourInformation.setHourTable(hourTable);
-
-                DetailDataHour detailDataHour = new DetailDataHour();
-
-                oneRowHourInformation.setDetailDataHour(detailDataHour);
-//                detailDataHour.setDriverDataHour(driverDataHour);
-
-                detailDataHour.setWorkedHoursString(DataMassive.getStringFromDoubleMassive(new double[31]));
-                detailDataHour.setGivenFuelString(DataMassive.getStringFromDoubleMassive(new double[31]));
-                detailDataHour.setUsedFuelAreaString(DataMassive.getStringFromDoubleMassive(new double[31]));
-
-                session.persist(detailDataHour);
-                session.persist(oneRowHourInformation);
-                //збережено в базу
-                return true;
-            }
-            tx.commit();
-        }catch(Exception e){
-            if (tx != null) {
-                tx.rollback();
-            }
-        }finally {
-            session.close();
-            tx =null;
-        }
-        return false;
-    }
-
-
-    public List<DriverDataHour> getAllHourInf(Long driverId, String month, int year){
-        session = HibernateUtil.getSessionFactory().createEntityManager();
-        EntityTransaction tx = session.getTransaction();
-        List<DriverDataHour> hourInf = null;
-        try{
-            tx.begin();
-            ///зчитуємо потрібні дані з DatAndInformation
-            Query<DateAndInformation> queryDateAndInf =
-                    (Query<DateAndInformation>) session.createQuery("from DateAndInformation where driver.driver_id=:driverId " +
-                    "and month=:month and year=:year");
-            queryDateAndInf.setParameter("driverId",driverId);
-            queryDateAndInf.setParameter("month", month);
-            queryDateAndInf.setParameter("year", year);
-            DateAndInformation dateAndInformation = queryDateAndInf.getSingleResult();
-
-            ///зчитуэмо потрбні дані з hour table
-            Query<HourTable> queryHourTable =
-                    (Query<HourTable>) session.createQuery("from  HourTable where dateAndInformation.date_id=:dateId");
-            queryHourTable.setParameter("dateId", dateAndInformation.getDate_id());
-            HourTable hourTable = queryHourTable.getSingleResult();
-
-            Query<DriverDataHour> queryDriverData =
-                    (Query<DriverDataHour>) session.createQuery("from DriverDataHour where hourTable.hour_id=:hectId");
-            queryDriverData.setParameter("hectId",hourTable.getHour_id());
-            hourInf = queryDriverData.getResultList();
-
-            tx.commit();
-        }catch(Exception e){
-            if (tx != null) {
-                tx.rollback();
-            }
-        }finally {
-            session.close();
-            tx =null;
-        }
-        return hourInf;
-    }
-
-    ///достає hourtable_id по id dateAndInformation table
-    public  HourTable getHourTable_idByDateAndInformationId(Long dateId){
-        session = HibernateUtil.getSessionFactory().createEntityManager();
-        EntityTransaction tx = session.getTransaction();
-        HourTable hourTable = null;
-        try{
-            tx.begin();
-            Query<HourTable> query =
-                    (Query<HourTable>) session.createQuery("from  HourTable where dateAndInformation.date_id=:dateId");
-            query.setParameter("dateId", dateId);
-            hourTable = query.getSingleResult();
-            tx.commit();
-        }catch (Exception ex){
-            if (tx != null) {
-                tx.rollback();
-            }
-        }finally {
-            session.close();
-            tx =null;
-        }
-        return hourTable;
-    }
-
-    public List<DriverDataHour> getDriverDataHectareByHourTableId(Long hourId){
-        session = HibernateUtil.getSessionFactory().createEntityManager();
-        EntityTransaction tx = session.getTransaction();
-        List<DriverDataHour> driverDataHours = null;
-        try{
-            tx.begin();
-            Query<DriverDataHour> queryDriverData = (Query<DriverDataHour>) session.createQuery("from DriverDataHour where hourTable.hour_id=:hourId");
-            queryDriverData.setParameter("hourId",hourId);
-            driverDataHours = queryDriverData.getResultList();
-            tx.commit();
-        }catch(Exception e){
-            if (tx != null) {
-                tx.rollback();
-            }
-        }finally {
-            session.close();
-            tx =null;
-        }
-        return driverDataHours;
-    }
-
-    public DriverDataHour getDriverDataHourById(Long dataId){
-        session = HibernateUtil.getSessionFactory().createEntityManager();
-        EntityTransaction tx = session.getTransaction();
-        DriverDataHour driverDataHour = null;
-        try{
-            tx.begin();
-
-            Query<DriverDataHour> queryDriverData =
-                    (Query<DriverDataHour>) session.createQuery("from DriverDataHour where data_id=:dataId");
-            queryDriverData.setParameter("dataId",dataId);
-            driverDataHour = queryDriverData.getSingleResult();
-
-            tx.commit();
-        }catch(Exception e){
-            if (tx != null) {
-                tx.rollback();
-            }
-        }finally {
-            session.close();
-            tx =null;
-        }
-
-        return driverDataHour;
-    }
-
-    ////зберігаються внесені дані
-    public void editDriverDataHour(DriverDataHour driverDataHour){
-        session = HibernateUtil.getSessionFactory().createEntityManager();
-        EntityTransaction tx = session.getTransaction();
-        try{
-            tx.begin();
-
-            session.merge(driverDataHour);
-
-            tx.commit();
-        }catch(Exception e){
-            if (tx != null) {
-                tx.rollback();
-            }
-        }finally {
-            session.close();
-            tx =null;
-        }
-
-    }
-
 
 }

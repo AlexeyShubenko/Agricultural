@@ -1,10 +1,11 @@
 package com.agricultural.swing.frames.tablemodels;
 
 import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.domains.DataMassive;
 import com.agricultural.domains.gectarniyvirobitok.DetailDataHectare;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
+import com.agricultural.service.InformationHectareService;
+import com.agricultural.service.impl.InformationHectareServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class DetailHectareTableModel extends AbstractTableModel {
     private ArrayList<Integer> updatesNumber = new ArrayList();
     private DetailDataHectare detailDataHectare;
 
-    private InformationHectareDAOImpl infoService = new InformationHectareDAOImpl();
+    private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
     private DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
 
     public DetailHectareTableModel(DetailDataHectare detailDataHectare){
@@ -96,7 +97,7 @@ public class DetailHectareTableModel extends AbstractTableModel {
         double totalCultivatedArea = dataMassive.getTotalResult(dataMassive.getCultAreaOrWorkedHour());
         double totalGivenFuel = dataMassive.getTotalResult(dataMassive.getGivenFuel());
 
-        DriverDataHectare driverDataHectare = infoService.getDriverDataHectareById(detailDataHectare.getDriverDataHectare().getData_id());
+        DriverDataHectare driverDataHectare = infoHectareService.getDriverDataHectareById(detailDataHectare.getDriverDataHectare().getData_id());
         driverDataHectare.setCultivatedArea(totalCultivatedArea);
         driverDataHectare.setGivenFuel(totalGivenFuel);
         double totalUsedFuel = dataMassive.calculateUsedFuel(totalGivenFuel,totalCultivatedArea);
@@ -105,7 +106,7 @@ public class DetailHectareTableModel extends AbstractTableModel {
         ///для обрахунку загальної суми грошей
         driverDataHectare.setOverallWorkCost(driverDataHectare.getCultivatedArea()*driverDataHectare.getWorkCost());
 
-        infoService.editDriverDataHectare(driverDataHectare);
+        infoHectareService.editDriverDataHectare(driverDataHectare);
 
     }
 

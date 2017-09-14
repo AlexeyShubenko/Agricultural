@@ -2,13 +2,16 @@ package com.agricultural.dao.tractordrivers;
 
 import com.agricultural.dao.HibernateUtil;
 import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.domains.main.DateAndInformation;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.gectarniyvirobitok.HectareTable;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.hoursvirobitok.HourTable;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.InformationHectareService;
+import com.agricultural.service.impl.InformationHectareServiceImpl;
+import com.agricultural.service.InformationHourService;
+import com.agricultural.service.impl.InformationHourServiceImpl;
 import org.hibernate.query.Query;
 
 import javax.persistence.EntityManager;
@@ -32,7 +35,8 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
 
     private EntityManager session;
 
-    private InformationHectareDAOImpl infoService  = new InformationHectareDAOImpl();
+    private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
+    private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
 
     public void createOrUpdateTractorDriver(TractorDriver tractorDriver) {
         session = HibernateUtil.getSessionFactory().createEntityManager();
@@ -56,19 +60,19 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
         System.out.println("in delete method");
         DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
 
-        List<DateAndInformation> dateAndInformation = infoService.getDateAndAllInformationByDriverId(driver.getDriver_id());
+        List<DateAndInformation> dateAndInformation = infoHectareService.getListDateAndAllInformationByDriverId(driver.getDriver_id());
         for(DateAndInformation d: dateAndInformation) {
-            infoService.deleteDateAndInformation(d.getDate_id());
+            infoHectareService.deleteDateAndInformation(d.getDate_id());
         }
 
 
         List<HectareTable> hectareTables = new ArrayList<>();
         for (HectareTable hectaretable:hectareTables){
-            infoService.deleteHectareHourTable(hectaretable.getHect_id(),"hectare");
+            infoHectareService.deleteHectareHourTable(hectaretable.getHect_id(),"hectare");
         }
         List<HourTable> hourTables = new ArrayList<>();
         for (HourTable hourTable:hourTables){
-            infoService.deleteHectareHourTable(hourTable.getHour_id(),"hour");
+            infoHectareService.deleteHectareHourTable(hourTable.getHour_id(),"hour");
         }
 
         List<DriverDataHectare> driverDataHectares = new ArrayList<>();
@@ -76,8 +80,8 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
         for (int i = 0; i < hectareTables.size(); i++) {
             hectareTables.get(i).setHectareData(null);
             for (int j = 0; j < driverDataHectares.size(); j++) {
-                driverDataHectares = infoService.getDriverDataHectareByHectareTableId(hectareTables.get(i).getHect_id());
-                infoService.deleteDriverDataHectareHour(driverDataHectares.get(i),null);
+                driverDataHectares = infoHectareService.getDriverDataHectareByHectareTableId(hectareTables.get(i).getHect_id());
+                infoHectareService.deleteDriverDataHectare(driverDataHectares.get(i));
                 detailService.deleteDetailDataHectare(driverDataHectares.get(j).getData_id());
             }
         }
@@ -87,8 +91,8 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
         for (int i = 0; i < hourTables.size(); i++) {
             hectareTables.get(i).setHectareData(null);
             for (int j = 0; j < driverDataHours.size(); j++) {
-                driverDataHours = infoService.getDriverDataHectareByHourTableId(hectareTables.get(i).getHect_id());
-                infoService.deleteDriverDataHectareHour(null,driverDataHours.get(i));
+                driverDataHours = infoHourService.getDriverDataHourByHourTableId(hectareTables.get(i).getHect_id());
+                infoHourService.deleteDriverDataHour(driverDataHours.get(i));
                 detailService.deleteDetailDataHour(driverDataHours.get(j).getData_id());
             }
         }

@@ -1,6 +1,5 @@
 package com.agricultural.swing.frames.driverinformation;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
 import com.agricultural.domains.gectarniyvirobitok.DetailDataHectare;
 import com.agricultural.domains.main.TractorDriver;

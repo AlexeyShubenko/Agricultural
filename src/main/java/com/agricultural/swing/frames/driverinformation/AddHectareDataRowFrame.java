@@ -1,8 +1,8 @@
 package com.agricultural.swing.frames.driverinformation;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.operations.OperationDAOImpl;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.InformationHectareService;
+import com.agricultural.service.impl.InformationHectareServiceImpl;
 import com.agricultural.service.MachineService;
 import com.agricultural.service.OperationService;
 import com.agricultural.service.impl.MachineServiceImpl;
@@ -22,7 +22,8 @@ public class AddHectareDataRowFrame extends JFrame{
 
     private OperationService operationService = OperationServiceImpl.getInstance();
     private MachineService machineService = MachineServiceImpl.getInstance();
-    private InformationHectareDAOImpl infService = new InformationHectareDAOImpl();
+    private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
+
 
     private JComboBox operationComboBox;
     private JComboBox machinesComboBox;
@@ -84,13 +85,13 @@ public class AddHectareDataRowFrame extends JFrame{
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ///для таблиці dateAndInformation, якщо таких записів немає то і немає записів Hectare table
-                if(!infService.isDateAndInformationExist(driver.getDriver_id(),month,year)){
-                    infService.createDateAndInformationHectareTableHourTable(driver.getDriver_id(),month,year);
+                if(!infoHectareService.isDateAndInformationExist(driver.getDriver_id(),month,year)){
+                    infoHectareService.createDateAndInformationHectareTableHourTable(driver.getDriver_id(),month,year);
                 }
 
                 ///перевірка наявності запису з такими даними
 //                if(driverDataHectare==null) {
-                    if (infService.saveOneRowHectareInf(driver.getDriver_id(),
+                    if (infoHectareService.saveOneRowHectareInf(driver.getDriver_id(),
                             operationSelected, machineSelected, month, year)) {
                     ///створюється запис для driverDetailInformation при створенні driverDataHectare
 //                        detailService.createDetailInformationHectare(dataHectare);

@@ -1,14 +1,13 @@
 package com.agricultural.swing.frames.allinformation;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.Month;
 import com.agricultural.domains.main.Workplace;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.main.TractorDriver;
-import com.agricultural.service.TractorDriverService;
-import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.*;
+import com.agricultural.service.impl.InformationHectareServiceImpl;
+import com.agricultural.service.impl.InformationHourServiceImpl;
 import com.agricultural.service.impl.TractorDriverServiceImpl;
 import com.agricultural.service.impl.WorkplaceServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
@@ -47,7 +46,9 @@ public class AllInformationFrame extends JFrame{
 
     private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
     private TractorDriverService employeeService = TractorDriverServiceImpl.getInstance();
-    private InformationHectareDAOImpl infoService = new InformationHectareDAOImpl();
+
+    private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
+    private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
 
     private final Integer DEFAULT_X_LOCATION=0;
     private final Integer DEFAULT_Y_LOCATION=0;
@@ -121,7 +122,7 @@ public class AllInformationFrame extends JFrame{
                 ///розбиття робітників за workplace
                 if (workplaces.get(i).getWorkPlaceName().equals(employees.get(j).getWorkplace().getWorkPlaceName())) {
                     ///по кожному працівнику треба отримати масив driverDataHectare
-                    List<DriverDataHectare> e = infoService.getAllHectareInf(employees.get(j).getDriver_id()
+                    List<DriverDataHectare> e = infoHectareService.getAllHectareInf(employees.get(j).getDriver_id()
                             , String.valueOf(monthCombo.getSelectedItem()), checkedYear);
                     if (e != null) {
                         employeeDataHectare.addAll(e);
@@ -172,7 +173,7 @@ public class AllInformationFrame extends JFrame{
                 ///розбиття робітників за workplace
                 if (workplaces.get(i).getWorkPlaceName().equals(employees.get(j).getWorkplace().getWorkPlaceName())) {
                     ///по кожному працівнику треба отримати масив driverDataHectare
-                    List<DriverDataHour> e = infoService.getAllHourInf(employees.get(j).getDriver_id()
+                    List<DriverDataHour> e = infoHourService.getAllHourInf(employees.get(j).getDriver_id()
                             , String.valueOf(monthCombo.getSelectedItem()), checkedYear);
                     if (e != null) {
                         employeeDataHour.addAll(e);
@@ -222,8 +223,8 @@ public class AllInformationFrame extends JFrame{
             for (int j = 0; j < employees.size(); j++) {
                 ///розбиття робітників за workplace
                 if (workplaces.get(i).getWorkPlaceName().equals(employees.get(j).getWorkplace().getWorkPlaceName())) {
-                    ///по кожному працівнику треба отримати масив driverDataHectare
-                    List<DriverDataHour> e = infoService.getAllHourInf(employees.get(j).getDriver_id()
+                    ///по кожному працівнику треба отримати масив driverDataHour
+                    List<DriverDataHour> e = infoHourService.getAllHourInf(employees.get(j).getDriver_id()
                             , String.valueOf(monthCombo.getSelectedItem()), checkedYear);
                     if (e != null) {
                         employeeDataHour.addAll(e);
@@ -237,7 +238,7 @@ public class AllInformationFrame extends JFrame{
                 ///розбиття робітників за workplace
                 if (workplaces.get(i).getWorkPlaceName().equals(employees.get(j).getWorkplace().getWorkPlaceName())) {
                     ///по кожному працівнику треба отримати масив driverDataHectare
-                    List<DriverDataHectare> e = infoService.getAllHectareInf(employees.get(j).getDriver_id()
+                    List<DriverDataHectare> e = infoHectareService.getAllHectareInf(employees.get(j).getDriver_id()
                             , String.valueOf(monthCombo.getSelectedItem()), checkedYear);
                     if (e != null) {
                         employeeDataHectare.addAll(e);

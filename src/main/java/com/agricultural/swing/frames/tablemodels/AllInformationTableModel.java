@@ -1,13 +1,10 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.domains.DataMassive;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.swing.frames.allinformation.DataInformation;
-import lombok.Data;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,8 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
+import com.agricultural.service.InformationHectareService;
+import com.agricultural.service.impl.InformationHectareServiceImpl;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -27,7 +28,7 @@ public class MainInformationHectareTableModel extends AbstractTableModel {
     private final Integer COLUMN_NUMBER = 10;
 
     private List<DriverDataHectare> driverDataHectare;
-    private InformationHectareDAOImpl infService = new InformationHectareDAOImpl();
+    private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
 
     public MainInformationHectareTableModel(List<DriverDataHectare> driverDataHectare) {
         this.driverDataHectare = driverDataHectare;
@@ -68,7 +69,7 @@ public class MainInformationHectareTableModel extends AbstractTableModel {
             driverDataHectare.get(row).setWorkCost(workCost.doubleValue());
 
             driverDataHectare.get(row).calcOverallWorkCost();///перерахунок ціни повної роботи
-            infService.editDriverDataHectare(driverDataHectare.get(row));
+            infoHectareService.editDriverDataHectare(driverDataHectare.get(row));
         }
     }
 

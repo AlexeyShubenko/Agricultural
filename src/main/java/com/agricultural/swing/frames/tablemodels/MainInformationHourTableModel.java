@@ -1,9 +1,10 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.tractordrivers.TractorDriverDaoImpl;
+import com.agricultural.dao.hectareinformation.InformationHectareDaoImpl;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
+import com.agricultural.service.InformationHourService;
 import com.agricultural.service.TractorDriverService;
+import com.agricultural.service.impl.InformationHourServiceImpl;
 import com.agricultural.service.impl.TractorDriverServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
@@ -25,7 +26,7 @@ public class MainInformationHourTableModel extends AbstractTableModel {
     private final Integer COLUMN_NUMBER = 10;
     List<DriverDataHour> driverDataHours;
 
-    private InformationHectareDAOImpl infService = new InformationHectareDAOImpl();
+    private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
 
     public MainInformationHourTableModel(List<DriverDataHour> driverDataHours) {
         this.driverDataHours = driverDataHours;
@@ -63,7 +64,7 @@ public class MainInformationHourTableModel extends AbstractTableModel {
             }
             driverDataHours.get(row).setWorkCost(Double.valueOf(data[row][6]));
             driverDataHours.get(row).calcOverallWorkCost();///перерахунок ціни повної роботи
-            infService.editDriverDataHour(driverDataHours.get(row));
+            infoHourService.editDriverDataHour(driverDataHours.get(row));
         }
     }
 

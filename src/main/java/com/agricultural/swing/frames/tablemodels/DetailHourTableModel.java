@@ -1,11 +1,11 @@
 package com.agricultural.swing.frames.tablemodels;
 
 import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
 import com.agricultural.domains.DataMassive;
-import com.agricultural.domains.gectarniyvirobitok.DetailDataHectare;
 import com.agricultural.domains.hoursvirobitok.DetailDataHour;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
+import com.agricultural.service.InformationHourService;
+import com.agricultural.service.impl.InformationHourServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class DetailHourTableModel extends AbstractTableModel {
     private ArrayList<Integer> updatesNumber = new ArrayList();
     private DetailDataHour detailDataHour;
 
-    private InformationHectareDAOImpl infoService = new InformationHectareDAOImpl();
+    private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
     private DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
 
     public DetailHourTableModel(DetailDataHour detailDataHour){
@@ -99,7 +99,7 @@ public class DetailHourTableModel extends AbstractTableModel {
 
         ///заповнюємо наступні дані для driverDataHectare
         ///"Відпрацьовано годин, год","Отримано палива, л", "Витрата палива, л/га", "Вартість робіт, грн/га", "Загальна вартість робіт, грн"
-        DriverDataHour driverDataHour = infoService.getDriverDataHourById(detailDataHour.getDriverDataHour().getData_id());
+        DriverDataHour driverDataHour = infoHourService.getDriverDataHourById(detailDataHour.getDriverDataHour().getData_id());
         driverDataHour.setWorkedHours(totalWorkedHour);
         driverDataHour.setGivenFuel(totalGivenFuel);
         double totalUsedFuel = dataMassive.calculateUsedFuel(driverDataHour.getGivenFuel(),driverDataHour.getWorkedHours());
@@ -109,7 +109,7 @@ public class DetailHourTableModel extends AbstractTableModel {
         ///для обрахунку загальної суми грошей
         driverDataHour.setOverallWorkCost(driverDataHour.getWorkedHours()*driverDataHour.getWorkCost());
 
-        infoService.editDriverDataHour(driverDataHour);
+        infoHourService.editDriverDataHour(driverDataHour);
 
     }
 

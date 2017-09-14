@@ -1,10 +1,11 @@
 package com.agricultural.swing.frames.driverinformation;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.operations.OperationDAOImpl;
+import com.agricultural.dao.hectareinformation.InformationHectareDaoImpl;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.InformationHourService;
 import com.agricultural.service.MachineService;
 import com.agricultural.service.OperationService;
+import com.agricultural.service.impl.InformationHourServiceImpl;
 import com.agricultural.service.impl.MachineServiceImpl;
 import com.agricultural.service.impl.OperationServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
@@ -22,7 +23,8 @@ public class AddHourDataRowFrame extends JFrame{
 
     private OperationService operationService = OperationServiceImpl.getInstance();
     private MachineService machineService = MachineServiceImpl.getInstance();
-    private InformationHectareDAOImpl infService = new InformationHectareDAOImpl();
+//    private InformationHectareDaoImpl infService = new InformationHectareDaoImpl();
+    private InformationHourService informationHourService = InformationHourServiceImpl.getInstance();
 
     private JComboBox operationComboBox;
     private JComboBox machinesComboBox;
@@ -84,11 +86,11 @@ public class AddHourDataRowFrame extends JFrame{
                 //зберегти в базу
                 ///перевірка наявності запису з такими даними
                 ///для таблиці dateAndInformation, якщо таких записів немає то і немає записів Hectare table
-                if(!infService.isDateAndInformationExist(driver.getDriver_id(),month,year)){
-                    infService.createDateAndInformationHectareTableHourTable(driver.getDriver_id(),month,year);
+                if(!informationHourService.isDateAndInformationExist(driver.getDriver_id(),month,year)){
+                    informationHourService.createDateAndInformationHectareTableHourTable(driver.getDriver_id(),month,year);
                 }
 
-                if(infService.saveOneRowHOURInf(driver.getDriver_id(),
+                if(informationHourService.saveOneRowHOURInf(driver.getDriver_id(),
                         operationSelected,machineSelected,month,year)){
 
                     mainInfoFrame.dispose();

@@ -1,7 +1,5 @@
 package com.agricultural.swing.frames.driverinformation;
 
-import com.agricultural.dao.hectareinformation.InformationHectareDAOImpl;
-import com.agricultural.dao.workplaces.WorkplaceDaoImpl;
 import com.agricultural.domains.ExcelDataWriter;
 import com.agricultural.domains.Month;
 import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
@@ -9,8 +7,9 @@ import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.main.TractorDriver;
 import com.agricultural.domains.main.Workplace;
-import com.agricultural.service.TractorDriverService;
-import com.agricultural.service.WorkplaceService;
+import com.agricultural.service.*;
+import com.agricultural.service.impl.InformationHectareServiceImpl;
+import com.agricultural.service.impl.InformationHourServiceImpl;
 import com.agricultural.service.impl.TractorDriverServiceImpl;
 import com.agricultural.service.impl.WorkplaceServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
@@ -85,7 +84,9 @@ public class MainInfoFrame extends JFrame {
     ///тракторист інформацы якого знаходиться у таблиці
     private TractorDriver tractorDriver;
 
-    private InformationHectareDAOImpl infoService = new InformationHectareDAOImpl();
+    private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
+    private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
+
     private DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
     private TractorDriverService employeeService = TractorDriverServiceImpl.getInstance();
     private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
@@ -232,7 +233,7 @@ public class MainInfoFrame extends JFrame {
         Border titleHectare = BorderFactory.createTitledBorder(borderHectare,"ГЕКТАРНИЙ ВИРОБІТОК",2,2,BORDER_FONT);
 
         ///Таблиця Гектарний Виробіток
-        driverDataHectare = infoService.getAllHectareInf(driver.getDriver_id(), (String) monthCombo.getSelectedItem(), Integer.parseInt((String) yearCombo.getSelectedItem()));
+        driverDataHectare = infoHectareService.getAllHectareInf(driver.getDriver_id(), (String) monthCombo.getSelectedItem(), Integer.parseInt((String) yearCombo.getSelectedItem()));
         modelHectare = new MainInformationHectareTableModel(driverDataHectare);
         JTable tableHectare = new JTable(modelHectare);
         MainInfCellRenderer mainInfCellRenderer = new MainInfCellRenderer();
@@ -276,7 +277,7 @@ public class MainInfoFrame extends JFrame {
                         int isDelete = JOptionPane.showConfirmDialog(MainInfoFrame.this, "Ви впевнені, що хочете видалити дані?",
                                 "Увага!", JOptionPane.YES_NO_OPTION);
                         if (isDelete == 0) {
-                            infoService.deleteDriverDataHectareHour(dataHectare, null);
+                            infoHectareService.deleteDriverDataHectare(dataHectare);
                             detailService.deleteDetailDataHectare(dataHectare.getData_id());
                             MainInfoFrame.this.dispose();
                             MainInfoFrame mainInfoFrame = new MainInfoFrame(driver,
@@ -314,7 +315,7 @@ public class MainInfoFrame extends JFrame {
         Border borderTime = BorderFactory.createMatteBorder(3,3,3,3,Color.LIGHT_GRAY);
         Border titleTime = BorderFactory.createTitledBorder(borderTime,"ГОДИННИЙ ВИРОБІТОК",2,2,BORDER_FONT);
         ///Таблиця Годинного виробітку
-        driverDataHour = infoService.getAllHourInf(driver.getDriver_id(), (String) monthCombo.getSelectedItem(), Integer.parseInt((String) yearCombo.getSelectedItem()));
+        driverDataHour = infoHourService.getAllHourInf(driver.getDriver_id(), (String) monthCombo.getSelectedItem(), Integer.parseInt((String) yearCombo.getSelectedItem()));
         modelTime = new MainInformationHourTableModel(driverDataHour);
 
         JTable tableTime = new JTable(modelTime);
@@ -355,7 +356,7 @@ public class MainInfoFrame extends JFrame {
                         int isDelete = JOptionPane.showConfirmDialog(MainInfoFrame.this, "Ви впевнені, що хочете видалити дані?",
                                 "Увага!", JOptionPane.YES_NO_OPTION);
                         if(isDelete==0){
-                            infoService.deleteDriverDataHectareHour(null,driverHour);
+                            infoHourService.deleteDriverDataHour(driverHour);
                             MainInfoFrame.this.dispose();
                             MainInfoFrame mainInfoFrame = new MainInfoFrame(driver,
                                     monthCombo.getSelectedIndex(),Integer.parseInt((String) yearCombo.getSelectedItem()));
