@@ -1,10 +1,12 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
+import com.agricultural.dao.detailnformation.DetailInformationDaoImpl;
 import com.agricultural.domains.DataMassive;
 import com.agricultural.domains.gectarniyvirobitok.DetailDataHectare;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
+import com.agricultural.service.DetailInformationService;
 import com.agricultural.service.InformationHectareService;
+import com.agricultural.service.impl.DetailInformationServiceImpl;
 import com.agricultural.service.impl.InformationHectareServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
@@ -31,7 +33,7 @@ public class DetailHectareTableModel extends AbstractTableModel {
     private DetailDataHectare detailDataHectare;
 
     private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
-    private DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
+    private DetailInformationService detailService = DetailInformationServiceImpl.getInstance();
 
     public DetailHectareTableModel(DetailDataHectare detailDataHectare){
         this.detailDataHectare = detailDataHectare;

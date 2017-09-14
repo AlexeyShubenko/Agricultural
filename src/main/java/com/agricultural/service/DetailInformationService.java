@@ -1,4 +1,4 @@
-package com.agricultural.dao.detailnformation;
+package com.agricultural.service;
 
 import com.agricultural.domains.gectarniyvirobitok.DetailDataHectare;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
@@ -8,7 +8,7 @@ import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 /**
  * Created by Alexey on 11.09.2017.
  */
-public interface DetailInformationDAO {
+public interface DetailInformationService {
 
     void deleteDetailDataHectare(Long dataId);
 
@@ -35,4 +35,7 @@ public interface DetailInformationDAO {
     void editDetailDataHour(DetailDataHour detailDataHour);
 
     void deleteDetailDataHour(Long dataId);
+
+    ///метод для перевірки наявності даного запису в таблиці з такими даними
+    boolean isDetailDataHourExist(Long dataId);
 }

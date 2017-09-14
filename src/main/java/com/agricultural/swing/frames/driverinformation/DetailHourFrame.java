@@ -1,8 +1,10 @@
 package com.agricultural.swing.frames.driverinformation;
 
-import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
+import com.agricultural.dao.detailnformation.DetailInformationDaoImpl;
 import com.agricultural.domains.hoursvirobitok.DetailDataHour;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.DetailInformationService;
+import com.agricultural.service.impl.DetailInformationServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablemodels.DetailHourTableModel;
 import com.agricultural.swing.frames.tablerenderer.DetailCellRenderer;
@@ -38,7 +40,7 @@ public class DetailHourFrame extends JFrame{
 
    private DetailHourTableModel detailHectareTableModel;
 
-    DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
+    private DetailInformationService detailService = DetailInformationServiceImpl.getInstance();
 
     public DetailHourFrame(Long data_id, String operationName, String machineName,
                            ///ці дані треба створення MainInfoFrame після закінчення внесення даних

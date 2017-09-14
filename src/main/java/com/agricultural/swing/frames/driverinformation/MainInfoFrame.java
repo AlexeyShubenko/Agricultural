@@ -2,16 +2,13 @@ package com.agricultural.swing.frames.driverinformation;
 
 import com.agricultural.domains.ExcelDataWriter;
 import com.agricultural.domains.Month;
-import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
+import com.agricultural.dao.detailnformation.DetailInformationDaoImpl;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.main.TractorDriver;
 import com.agricultural.domains.main.Workplace;
 import com.agricultural.service.*;
-import com.agricultural.service.impl.InformationHectareServiceImpl;
-import com.agricultural.service.impl.InformationHourServiceImpl;
-import com.agricultural.service.impl.TractorDriverServiceImpl;
-import com.agricultural.service.impl.WorkplaceServiceImpl;
+import com.agricultural.service.impl.*;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.mainframes.TractorDriversFrame;
 import com.agricultural.swing.frames.tablemodels.totalmoney.TotalLastTableCellRenderer;
@@ -87,7 +84,7 @@ public class MainInfoFrame extends JFrame {
     private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
     private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
 
-    private DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
+    private DetailInformationService detailService = DetailInformationServiceImpl.getInstance();
     private TractorDriverService employeeService = TractorDriverServiceImpl.getInstance();
     private WorkplaceService workplaceService = WorkplaceServiceImpl.getInstance();
 

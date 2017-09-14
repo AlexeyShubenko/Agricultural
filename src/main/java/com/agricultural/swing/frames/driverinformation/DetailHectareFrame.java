@@ -1,8 +1,10 @@
 package com.agricultural.swing.frames.driverinformation;
 
-import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
+import com.agricultural.dao.detailnformation.DetailInformationDaoImpl;
 import com.agricultural.domains.gectarniyvirobitok.DetailDataHectare;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.DetailInformationService;
+import com.agricultural.service.impl.DetailInformationServiceImpl;
 import com.agricultural.swing.frames.FrameLocation;
 import com.agricultural.swing.frames.tablerenderer.DetailCellRenderer;
 import com.agricultural.swing.frames.tablemodels.DetailHectareTableModel;
@@ -38,7 +40,7 @@ public class DetailHectareFrame extends JFrame{
     private final Font TABLE_FONT = new Font("Serif", Font.PLAIN, 16);
     private DetailHectareTableModel detailHectareTableModel;
 
-   private DetailInformationDAOImpl detailHectareService = new DetailInformationDAOImpl();
+    private DetailInformationService detailService = DetailInformationServiceImpl.getInstance();
 
     public DetailHectareFrame(Long data_id, String operationName, String machineName,
                               ///ці дані треба створення MainInfoFrame після закінчення внесення даних
@@ -83,7 +85,7 @@ public class DetailHectareFrame extends JFrame{
         });
 
         ///отримуємо дані по id рядка даних в таблиці
-        DetailDataHectare detailDataHectare = detailHectareService.getDetailDataHectare(data_id);
+        DetailDataHectare detailDataHectare = detailService.getDetailDataHectare(data_id);
 
         detailHectareTableModel = new DetailHectareTableModel(detailDataHectare);
         JTable table = new JTable(detailHectareTableModel);

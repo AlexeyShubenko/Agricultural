@@ -1,14 +1,16 @@
 package com.agricultural.dao.tractordrivers;
 
 import com.agricultural.dao.HibernateUtil;
-import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
+import com.agricultural.dao.detailnformation.DetailInformationDaoImpl;
 import com.agricultural.domains.main.DateAndInformation;
 import com.agricultural.domains.gectarniyvirobitok.DriverDataHectare;
 import com.agricultural.domains.gectarniyvirobitok.HectareTable;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
 import com.agricultural.domains.hoursvirobitok.HourTable;
 import com.agricultural.domains.main.TractorDriver;
+import com.agricultural.service.DetailInformationService;
 import com.agricultural.service.InformationHectareService;
+import com.agricultural.service.impl.DetailInformationServiceImpl;
 import com.agricultural.service.impl.InformationHectareServiceImpl;
 import com.agricultural.service.InformationHourService;
 import com.agricultural.service.impl.InformationHourServiceImpl;
@@ -32,12 +34,14 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
     public static TractorDriverDaoImpl getInstance() {
         return instance;
     }
+    private DetailInformationService detailService = DetailInformationServiceImpl.getInstance();
 
     private EntityManager session;
 
     private InformationHectareService infoHectareService = InformationHectareServiceImpl.getInstance();
     private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
 
+    @Override
     public void createOrUpdateTractorDriver(TractorDriver tractorDriver) {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -54,11 +58,11 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
         }
     }
 
+    @Override
     public void deleteTractorDriver(TractorDriver driver) {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
         System.out.println("in delete method");
-        DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
 
         List<DateAndInformation> dateAndInformation = infoHectareService.getListDateAndAllInformationByDriverId(driver.getDriver_id());
         for(DateAndInformation d: dateAndInformation) {
@@ -112,6 +116,7 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
         }
     }
 
+    @Override
     public void editTractorDriver(TractorDriver driver) {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -132,6 +137,7 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
         }
     }
 
+    @Override
     public ArrayList<TractorDriver> getTractorDrivers() {
         session = HibernateUtil.getSessionFactory().createEntityManager();
         EntityTransaction tx = session.getTransaction();
@@ -194,6 +200,7 @@ public class TractorDriverDaoImpl implements TractorDriverDao {
         return driver;
     }
 
+    @Override
     public String[] getAllTractorDriversName(){
         ///отримаємо список всіх операцій
         ArrayList<TractorDriver> arrayTractorDrivers = getTractorDrivers();

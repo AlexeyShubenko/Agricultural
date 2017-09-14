@@ -1,10 +1,12 @@
 package com.agricultural.swing.frames.tablemodels;
 
-import com.agricultural.dao.detailnformation.DetailInformationDAOImpl;
+import com.agricultural.dao.detailnformation.DetailInformationDaoImpl;
 import com.agricultural.domains.DataMassive;
 import com.agricultural.domains.hoursvirobitok.DetailDataHour;
 import com.agricultural.domains.hoursvirobitok.DriverDataHour;
+import com.agricultural.service.DetailInformationService;
 import com.agricultural.service.InformationHourService;
+import com.agricultural.service.impl.DetailInformationServiceImpl;
 import com.agricultural.service.impl.InformationHourServiceImpl;
 
 import javax.swing.table.AbstractTableModel;
@@ -31,7 +33,7 @@ public class DetailHourTableModel extends AbstractTableModel {
     private DetailDataHour detailDataHour;
 
     private InformationHourService infoHourService = InformationHourServiceImpl.getInstance();
-    private DetailInformationDAOImpl detailService = new DetailInformationDAOImpl();
+    private DetailInformationService detailService = DetailInformationServiceImpl.getInstance();
 
     public DetailHourTableModel(DetailDataHour detailDataHour){
         this.detailDataHour = detailDataHour;

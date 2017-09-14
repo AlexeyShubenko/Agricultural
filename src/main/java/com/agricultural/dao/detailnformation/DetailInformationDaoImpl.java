@@ -15,7 +15,15 @@ import javax.persistence.EntityTransaction;
  * Created by Alexey on 09.03.2017.
  */
 
-public class DetailInformationDAOImpl implements DetailInformationDAO{
+public class DetailInformationDaoImpl implements DetailInformationDao {
+
+    private static DetailInformationDaoImpl instance = new DetailInformationDaoImpl();
+
+    private DetailInformationDaoImpl(){}
+
+    public static DetailInformationDaoImpl getInstance() {
+        return instance;
+    }
 
     private EntityManager session;
 
@@ -182,6 +190,7 @@ public class DetailInformationDAOImpl implements DetailInformationDAO{
     }
 
     ///метод для перевірки наявності даного запису в таблиці з такими даними
+    @Override
     public boolean isDetailDataHourExist(Long dataId){
         DetailDataHour detailDataHour = this.getDetailDataHour(dataId);
         return detailDataHour==null?false:true;
